@@ -1,0 +1,44 @@
+<section class="h-full flex flex-col gap-2 justify-between">
+  <div class="flex-1 max-h-[50%] h-full">
+    <h2>Pending Tasks</h2>
+    <div class="bg-gray-700 p-2 rounded-lg overflow-y-auto">
+      @for(task of tasks; track task.id) {
+      <div
+        class="p-2 text-xl rounded-lg flex items-center justify-between hover:bg-gray-800"
+      >
+        <div>
+          {{ task.title }}
+        </div>
+        <div class="flex items-center gap-4">
+          <div (click)="editTask(task.id)" class="grid place-items-center">
+            <ng-icon
+              name="heroPencil"
+              class="hover:scale-110 cursor-pointer text-xl"
+            />
+          </div>
+          <div (click)="completeTask(task.id)" class="grid place-items-center">
+            <ng-icon
+              name="heroCheck"
+              class="hover:scale-110 cursor-pointer text-xl"
+            />
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="flex-1 max-h-[50%]">
+    <h2>Completed Tasks</h2>
+    <div class="bg-gray-700 p-2 rounded-lg overflow-y-auto">
+      @for(task of completedTasks; track task.id) {
+      <div
+        class="p-2 text-xl rounded-lg flex items-center justify-between hover:bg-gray-800"
+      >
+        <div>
+          {{ task.title }}
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
