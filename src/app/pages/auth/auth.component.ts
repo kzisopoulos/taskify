@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -6,8 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 type AuthPage = 'login' | 'signup';
 
 @Component({
@@ -15,12 +15,11 @@ type AuthPage = 'login' | 'signup';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css',
 })
 export class AuthComponent {
   activePage: AuthPage = 'login';
-  constructor(private auth: AuthService, private router: Router) {
-    if (this.auth.checkAuth()) {
+  constructor(private authService: AuthService, private router: Router) {
+    if (this.authService.checkAuth()) {
       router.navigate(['']);
     }
   }
@@ -37,26 +36,26 @@ export class AuthComponent {
   });
 
   onLoginSubmit() {
-    this.auth
+    this.authService
       .login({
         username: this.loginForm.value.username!,
         password: this.loginForm.value.password!,
       })
       .subscribe((res) => {
-        this.auth.setState(res);
+        this.authService.setState(res);
         this.router.navigate(['']);
       });
   }
 
   onRegisterSubmit() {
-    this.auth
+    this.authService
       .register({
         username: this.registerForm.value.username!,
         email: this.registerForm.value.email!,
         password: this.registerForm.value.password!,
       })
       .subscribe((res) => {
-        this.auth.setState(res);
+        this.authService.setState(res);
         this.router.navigate(['']);
       });
   }

@@ -1,0 +1,66 @@
+<section class="h-full py-10 flex flex-col gap-2 justify-between relative">
+  <div class="absolute -bottom-1 right-5" (click)="createTask()">
+    <app-icon-button>
+      <ng-icon name="heroPlus"></ng-icon>
+    </app-icon-button>
+  </div>
+  <h2 class="text-xl text-center">Pending</h2>
+  <div class="flex-1 max-h-[50%] h-full bg-gray-800">
+    <div class="p-2 rounded-lg overflow-y-auto">
+      @for(task of pendingTasks$ | async; track task.id){
+      <div
+        class="p-3 text-lg rounded-lg flex items-center justify-between hover:bg-gray-900"
+      >
+        <div>
+          {{ task.title }}
+        </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="grid place-items-center rounded-full"
+            (click)="editTask(task.id)"
+          >
+            <ng-icon
+              name="heroPencil"
+              class="hover:scale-110 hover:text-yellow-500 cursor-pointer text-xl"
+            ></ng-icon>
+          </div>
+          <div
+            class="grid place-items-center rounded-full"
+            (click)="completeTask(task)"
+          >
+            <ng-icon
+              name="heroCheck"
+              class="hover:scale-110 hover:text-green-500 cursor-pointer text-xl"
+            ></ng-icon>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <h2 class="text-xl text-center">Completed</h2>
+  <div class="flex-1 max-h-[50%] h-full bg-gray-800">
+    <div class="p-2 rounded-lg overflow-y-auto">
+      @for(task of completedTasks$ | async; track task.id){
+      <div
+        class="p-3 text-lg rounded-lg flex items-center justify-between hover:bg-gray-900"
+      >
+        <div>
+          {{ task.title }}
+        </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="grid place-items-center rounded-full"
+            (click)="deleteTask(task.id)"
+          >
+            <ng-icon
+              name="heroTrash"
+              class="hover:scale-110 hover:text-red-500 cursor-pointer text-xl"
+            ></ng-icon>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

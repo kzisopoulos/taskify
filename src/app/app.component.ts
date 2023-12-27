@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
 // Layout
-import { NavbarComponent } from './components/layout/navbar/navbar.component';
-import { FooterComponent } from './components/layout/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from './services/auth.service';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { AuthService } from './core/services/auth.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCQxVJT80YlxjTIrmq6r99OxYS8nu9_PI0',
@@ -28,11 +28,10 @@ const firebaseConfig = {
     ReactiveFormsModule,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'Taskify App';
-  constructor(private auth: AuthService, private router: Router) {
-    this.auth.checkAuth();
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.checkAuth();
   }
 }

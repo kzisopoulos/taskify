@@ -7,7 +7,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import withCredentialsInterceptor from './interceptors/withCredentialsInterceptor';
+import withCredentialsInterceptor from './core/interceptors/withCredentialsInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

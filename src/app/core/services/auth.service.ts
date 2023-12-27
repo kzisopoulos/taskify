@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Route, Router } from '@angular/router';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 
 interface RouteResponse<T> {
   success: boolean;
@@ -36,9 +35,8 @@ export class AuthService {
 
   private id: number | undefined = undefined;
   private username: string | undefined = undefined;
-  private accessToken: string | undefined = undefined;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   register(
     body: RegisterBodyProps
@@ -56,13 +54,13 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<RouteResponse<AuthRouteResponse>> {
+  private logout(): Observable<RouteResponse<AuthRouteResponse>> {
     return this.http.get<RouteResponse<AuthRouteResponse>>(
       'http://localhost:3001/api/logout'
     );
   }
 
-  refreshToken(): Observable<RouteResponse<AuthRouteResponse>> {
+  private refreshToken(): Observable<RouteResponse<AuthRouteResponse>> {
     return this.http.get<RouteResponse<AuthRouteResponse>>(
       'http://localhost:3001/api/refresh'
     );
@@ -71,6 +69,7 @@ export class AuthService {
   checkAuth(): Observable<boolean> {
     return this.refreshToken().pipe(
       map((res) => {
+        this.setState(res);
         return res.success;
       }),
       catchError(() => {
@@ -83,6 +82,21 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
     this.id = res.data?.id;
     this.username = res.data?.username;
-    this.accessToken = res.data?.accessToken;
+  }
+
+  currentAuthStatus() {
+    return this.isLoggedInSubject.getValue();
+  }
+
+  getUsername() {
+    return this.username;
+  }
+
+  getUserId() {
+    return this.id;
+  }
+
+  logoutUser() {
+    this.logout().subscribe(() => location.reload());
   }
 }

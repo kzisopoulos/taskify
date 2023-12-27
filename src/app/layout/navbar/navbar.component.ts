@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TailwindUtilService } from '../../../services/tailwind-util.service';
-
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroBars4,
@@ -11,6 +9,7 @@ import {
   heroPaperAirplane,
 } from '@ng-icons/heroicons/outline';
 import { RouterLink } from '@angular/router';
+import { TailwindUtilService } from '../../core/utils/tailwind-util.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +19,6 @@ import { RouterLink } from '@angular/router';
     provideIcons({ heroBars4, heroXMark, heroPaperAirplane, heroPlus }),
   ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
   constructor(private mergeClasses: TailwindUtilService) {}

@@ -1,0 +1,7 @@
+<div *ngIf="task$ | async as task">
+  <div>edit task works</div>
+  <div>{{ task.id }}</div>
+  <div>{{ task.title }}</div>
+  <div>{{ task.note }}</div>
+  <div>{{ task.priority }}</div>
+</div>
