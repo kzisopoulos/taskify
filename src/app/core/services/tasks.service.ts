@@ -9,11 +9,13 @@ import {
   TaskRouteResponse,
   UpdateTaskBodyProps,
 } from '../models/task.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
+  private url = environment.apiUrl + '/tasks';
   private tasklist$ = new BehaviorSubject<TaskRouteResponse[] | null>(null);
   public tasks$ = this.tasklist$.asObservable();
 
@@ -24,15 +26,12 @@ export class TasksService {
   ) {}
 
   getTasks(): Observable<RouteResponse<TaskRouteResponse[]>> {
-    return this.http
-      .get<RouteResponse<TaskRouteResponse[]>>(
-        `http://localhost:3001/api/tasks/${this.authService.getUserId()}`
-      )
-      .pipe(
-        tap((tasks) => {
-          if (tasks.success && tasks.data) this.tasklist$.next(tasks.data);
-        })
-      );
+    const getTasksUrl = this.url + `/${this.authService.getUserId()}`;
+    return this.http.get<RouteResponse<TaskRouteResponse[]>>(getTasksUrl).pipe(
+      tap((tasks) => {
+        if (tasks.success && tasks.data) this.tasklist$.next(tasks.data);
+      })
+    );
   }
 
   loadTasks() {
@@ -42,11 +41,9 @@ export class TasksService {
   addTask(
     body: CreateTaskBodyProps
   ): Observable<RouteResponse<TaskRouteResponse>> {
+    const addTaskUrl = this.url;
     return this.http
-      .post<RouteResponse<TaskRouteResponse>>(
-        `http://localhost:3001/api/tasks`,
-        body
-      )
+      .post<RouteResponse<TaskRouteResponse>>(addTaskUrl, body)
       .pipe(
         tap((task) => {
           if (task.data) {
@@ -61,15 +58,12 @@ export class TasksService {
     taskId: number,
     body: UpdateTaskBodyProps
   ): Observable<RouteResponse<TaskRouteResponse>> {
-    return this.http.put<RouteResponse<TaskRouteResponse>>(
-      `http://localhost:3001/api/tasks/${taskId}`,
-      body
-    );
+    const updateTaskUrl = this.url + `/${taskId}`;
+    return this.http.put<RouteResponse<TaskRouteResponse>>(updateTaskUrl, body);
   }
 
   deleteTask(taskId: number): Observable<undefined> {
-    return this.http.delete<undefined>(
-      `http://localhost:3001/api/tasks/${taskId}`
-    );
+    const deleteTaskUrl = this.url + `/${taskId}`;
+    return this.http.delete<undefined>(deleteTaskUrl);
   }
 }

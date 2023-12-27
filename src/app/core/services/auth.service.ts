@@ -7,11 +7,13 @@ import {
   LoginBodyProps,
   RegisterBodyProps,
 } from '../models/auth.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private url = environment.apiUrl;
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
@@ -23,29 +25,23 @@ export class AuthService {
   register(
     body: RegisterBodyProps
   ): Observable<RouteResponse<AuthRouteResponse>> {
-    return this.http.post<RouteResponse<AuthRouteResponse>>(
-      'http://localhost:3001/api/register',
-      body
-    );
+    const registerUrl = this.url + '/register';
+    return this.http.post<RouteResponse<AuthRouteResponse>>(registerUrl, body);
   }
 
   login(body: LoginBodyProps): Observable<RouteResponse<AuthRouteResponse>> {
-    return this.http.post<RouteResponse<AuthRouteResponse>>(
-      'http://localhost:3001/api/login',
-      body
-    );
+    const loginUrl = this.url + '/login';
+    return this.http.post<RouteResponse<AuthRouteResponse>>(loginUrl, body);
   }
 
   private logout(): Observable<RouteResponse<AuthRouteResponse>> {
-    return this.http.get<RouteResponse<AuthRouteResponse>>(
-      'http://localhost:3001/api/logout'
-    );
+    const logoutUrl = this.url + '/logout';
+    return this.http.get<RouteResponse<AuthRouteResponse>>(logoutUrl);
   }
 
   private refreshToken(): Observable<RouteResponse<AuthRouteResponse>> {
-    return this.http.get<RouteResponse<AuthRouteResponse>>(
-      'http://localhost:3001/api/refresh'
-    );
+    const refreshTokenUrl = this.url + '/refresh';
+    return this.http.get<RouteResponse<AuthRouteResponse>>(refreshTokenUrl);
   }
 
   checkAuth(): Observable<boolean> {
