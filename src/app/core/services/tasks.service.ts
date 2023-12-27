@@ -3,37 +3,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
-
-interface RouteResponse<T> {
-  success: boolean;
-  code: number;
-  message: string;
-  error: string | null;
-  data: T | null;
-}
-export interface TaskRouteResponse {
-  id: number;
-  title: string;
-  priority: string;
-  note: string;
-  done: boolean;
-  userId: number;
-}
-
-interface CreateTaskBodyProps {
-  title: string;
-  priority: string;
-  note: string;
-  done: boolean;
-  userId: number;
-}
-
-interface UpdateTaskBodyProps {
-  title: string;
-  priority: string;
-  note: string;
-  done: boolean;
-}
+import { RouteResponse } from '../models/response.interface';
+import {
+  CreateTaskBodyProps,
+  TaskRouteResponse,
+  UpdateTaskBodyProps,
+} from '../models/task.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -1,30 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
-
-interface RouteResponse<T> {
-  success: boolean;
-  code: number;
-  message: string;
-  error: string | null;
-  data: T | null;
-}
-interface AuthRouteResponse {
-  id: number;
-  username: string;
-  accessToken: string;
-}
-
-interface RegisterBodyProps {
-  username: string;
-  email: string;
-  password: string;
-}
-
-interface LoginBodyProps {
-  username: string;
-  password: string;
-}
+import { RouteResponse } from '../models/response.interface';
+import {
+  AuthRouteResponse,
+  LoginBodyProps,
+  RegisterBodyProps,
+} from '../models/auth.interface';
 
 @Injectable({
   providedIn: 'root',

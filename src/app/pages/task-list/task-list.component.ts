@@ -10,11 +10,9 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { Router } from '@angular/router';
 import { IconButtonComponent } from '../../components/ui/icon-button/icon-button.component';
-import {
-  TasksService,
-  TaskRouteResponse,
-} from '../../core/services/tasks.service';
+import { TasksService } from '../../core/services/tasks.service';
 import { map, tap } from 'rxjs';
+import { TaskRouteResponse } from '../../core/models/task.interface';
 @Component({
   selector: 'app-task-list',
   standalone: true,
