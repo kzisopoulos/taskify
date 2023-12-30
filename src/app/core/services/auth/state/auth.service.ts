@@ -6,12 +6,13 @@ import {
   LoginBodyProps,
   RegisterBodyProps,
 } from '../../../models/auth.interface';
+import { RouteResponse } from '../../../models/response.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private authApiService = inject(AuthApiService);
+  constructor(private authApiService: AuthApiService) {}
 
   private username: string | undefined = undefined;
   private id: number | undefined = undefined;
@@ -22,13 +23,7 @@ export class AuthService {
 
   public checkAuth$ = this.authApiService.refreshToken().pipe(
     tap((value) => {
-      if (value.success) {
-        this.isLoggedInSubject.next(true);
-        this.setState(value.data);
-      } else {
-        this.isLoggedInSubject.next(false);
-        this.setState(value.data);
-      }
+      this.setState(value);
       return value.success;
     })
   );
@@ -48,38 +43,28 @@ export class AuthService {
   public handleLogin(body: LoginBodyProps) {
     return this.authApiService.login(body).pipe(
       tap((value) => {
-        if (value.success) {
-          this.isLoggedInSubject.next(true);
-          this.setState(value.data);
-        } else {
-          this.isLoggedInSubject.next(false);
-          this.setState(value.data);
-        }
+        this.setState(value);
         return value;
       })
     );
   }
   public handleRegister(body: RegisterBodyProps) {
-    return this.authApiService.login(body).pipe(
+    return this.authApiService.register(body).pipe(
       tap((value) => {
-        if (value.success) {
-          this.isLoggedInSubject.next(true);
-          this.setState(value.data);
-        } else {
-          this.isLoggedInSubject.next(false);
-          this.setState(value.data);
-        }
+        this.setState(value);
         return value;
       })
     );
   }
 
-  private setState(data: AuthRouteResponse | null) {
-    if (data) {
-      this.username = data?.username;
-      this.id = data?.id;
-      this.accessToken = data?.accessToken;
+  private setState(value: RouteResponse<AuthRouteResponse>) {
+    if (value.success) {
+      this.isLoggedInSubject.next(true);
+      this.username = value.data?.username;
+      this.id = value.data?.id;
+      this.accessToken = value.data?.accessToken;
     } else {
+      this.isLoggedInSubject.next(false);
       this.username = undefined;
       this.id = undefined;
       this.accessToken = undefined;
