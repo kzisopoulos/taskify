@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -10,8 +10,8 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { Router } from '@angular/router';
 import { IconButtonComponent } from '../../components/ui/icon-button/icon-button.component';
-import { TasksService } from '../../core/services/tasks.service';
-import { map, tap } from 'rxjs';
+import { TasksService } from '../../core/services/tasks/state/tasks.service';
+import { map } from 'rxjs';
 import { TaskRouteResponse } from '../../core/models/task.interface';
 @Component({
   selector: 'app-task-list',
@@ -20,7 +20,7 @@ import { TaskRouteResponse } from '../../core/models/task.interface';
   providers: [provideIcons({ heroPencil, heroCheck, heroPlus, heroTrash })],
   templateUrl: './task-list.component.html',
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent {
   constructor(private taskService: TasksService, private router: Router) {}
   completedTasks$ = this.taskService.tasks$.pipe(
     map((tasks) => tasks?.filter((task) => task.done))
@@ -28,14 +28,10 @@ export class TaskListComponent implements OnInit {
   pendingTasks$ = this.taskService.tasks$.pipe(
     map((tasks) => tasks?.filter((task) => !task.done))
   );
-  ngOnInit(): void {
-    this.taskService.loadTasks();
-  }
 
   completeTask(task: TaskRouteResponse) {
     this.taskService
       .updateTask(task.id, { ...task, done: true })
-      .pipe(tap(() => this.taskService.loadTasks()))
       .subscribe((res) => res);
   }
 
@@ -48,9 +44,6 @@ export class TaskListComponent implements OnInit {
   }
 
   deleteTask(id: number) {
-    this.taskService
-      .deleteTask(id)
-      .pipe(tap(() => this.taskService.loadTasks()))
-      .subscribe((res) => res);
+    this.taskService.deleteTask(id).subscribe((res) => res);
   }
 }

@@ -7,7 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { AuthService } from './core/services/auth/state/auth.service';
-import { Subscription, of } from 'rxjs';
+import { Subscription, of, switchMap, tap } from 'rxjs';
+import { TasksService } from './core/services/tasks/state/tasks.service';
 
 @Component({
   selector: 'app-root',
@@ -24,10 +25,23 @@ import { Subscription, of } from 'rxjs';
 export class AppComponent implements OnDestroy {
   title = 'Taskify App';
   public authSubscription: Subscription;
-  constructor(private authService: AuthService, private router: Router) {
-    this.authSubscription = this.authService.checkAuth$.subscribe((value) => {
-      this.router.navigate(['']);
-    });
+  constructor(
+    private authService: AuthService,
+    private tasksService: TasksService,
+    private router: Router
+  ) {
+    this.authSubscription = this.authService.checkAuth$
+      .pipe(
+        switchMap((value) => {
+          if (value.success) {
+            return this.tasksService.loadTasks();
+          }
+          return of(null);
+        })
+      )
+      .subscribe(() => {
+        this.router.navigate(['']);
+      });
   }
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { TasksService } from '../../core/services/tasks.service';
+import { TasksService } from '../../core/services/tasks/state/tasks.service';
 import { map } from 'rxjs';
 
 @Component({
