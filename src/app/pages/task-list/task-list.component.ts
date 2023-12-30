@@ -22,7 +22,6 @@ import { TaskRouteResponse } from '../../core/models/task.interface';
 })
 export class TaskListComponent implements OnInit {
   constructor(private taskService: TasksService, private router: Router) {}
-  tasks$ = this.taskService.tasks$;
   completedTasks$ = this.taskService.tasks$.pipe(
     map((tasks) => tasks?.filter((task) => task.done))
   );
