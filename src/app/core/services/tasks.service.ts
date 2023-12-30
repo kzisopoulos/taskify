@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/state/auth.service';
 import { RouteResponse } from '../models/response.interface';
 import {
   CreateTaskBodyProps,

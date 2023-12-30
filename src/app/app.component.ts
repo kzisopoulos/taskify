@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
@@ -6,7 +6,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { AuthService } from './core/services/auth.service';
+import { AuthService } from './core/services/auth/state/auth.service';
+import { Subscription, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,15 @@ import { AuthService } from './core/services/auth.service';
   ],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'Taskify App';
+  public authSubscription: Subscription;
   constructor(private authService: AuthService, private router: Router) {
-    this.authService.checkAuth();
+    this.authSubscription = this.authService.checkAuth$.subscribe((value) => {
+      this.router.navigate(['']);
+    });
+  }
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
   }
 }

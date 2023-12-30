@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth/state/auth.service';
+import { Subscription, tap } from 'rxjs';
 type AuthPage = 'login' | 'signup';
 
 @Component({
@@ -16,12 +17,21 @@ type AuthPage = 'login' | 'signup';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './auth.component.html',
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
   activePage: AuthPage = 'login';
+  public authSubscription: Subscription;
   constructor(private authService: AuthService, private router: Router) {
-    if (this.authService.checkAuth()) {
-      router.navigate(['']);
-    }
+    this.authSubscription = this.authService.isLoggedIn$
+      .pipe((value) => {
+        if (value) {
+          this.router.navigate(['']);
+        }
+        return value;
+      })
+      .subscribe();
+  }
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
   }
 
   loginForm = new FormGroup({
@@ -37,27 +47,33 @@ export class AuthComponent {
 
   onLoginSubmit() {
     this.authService
-      .login({
+      .handleLogin({
         username: this.loginForm.value.username!,
         password: this.loginForm.value.password!,
       })
-      .subscribe((res) => {
-        this.authService.setState(res);
-        this.router.navigate(['']);
-      });
+      .pipe(
+        tap((value) => {
+          this.router.navigate(['']);
+          return value;
+        })
+      )
+      .subscribe();
   }
 
   onRegisterSubmit() {
     this.authService
-      .register({
+      .handleRegister({
         username: this.registerForm.value.username!,
         email: this.registerForm.value.email!,
         password: this.registerForm.value.password!,
       })
-      .subscribe((res) => {
-        this.authService.setState(res);
-        this.router.navigate(['']);
-      });
+      .pipe(
+        tap((value) => {
+          this.router.navigate(['']);
+          return value;
+        })
+      )
+      .subscribe();
   }
 
   setActivePage(page: AuthPage) {
