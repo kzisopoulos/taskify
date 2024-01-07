@@ -8,7 +8,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/state/auth.service';
-import { Subscription, tap } from 'rxjs';
+import { Subscription, of, switchMap, tap } from 'rxjs';
+import { TasksService } from '../../core/services/tasks/state/tasks.service';
 type AuthPage = 'login' | 'signup';
 
 @Component({
@@ -20,14 +21,20 @@ type AuthPage = 'login' | 'signup';
 export class AuthComponent implements OnDestroy {
   activePage: AuthPage = 'login';
   public authSubscription: Subscription;
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private tasksService: TasksService,
+    private router: Router
+  ) {
     this.authSubscription = this.authService.isLoggedIn$
-      .pipe((value) => {
-        if (value) {
-          this.router.navigate(['']);
-        }
-        return value;
-      })
+      .pipe(
+        tap((value) => {
+          if (value) {
+            this.router.navigate(['']);
+          }
+          return value;
+        })
+      )
       .subscribe();
   }
   ngOnDestroy(): void {
@@ -55,6 +62,10 @@ export class AuthComponent implements OnDestroy {
         tap((value) => {
           this.router.navigate(['']);
           return value;
+        }),
+        switchMap((value) => {
+          if (value.success) return this.tasksService.loadTasks();
+          else return of(null);
         })
       )
       .subscribe();
@@ -71,6 +82,10 @@ export class AuthComponent implements OnDestroy {
         tap((value) => {
           this.router.navigate(['']);
           return value;
+        }),
+        switchMap((value) => {
+          if (value.success) return this.tasksService.loadTasks();
+          else return of(null);
         })
       )
       .subscribe();

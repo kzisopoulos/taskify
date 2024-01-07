@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { AuthService } from './core/services/auth/state/auth.service';
-import { Subscription, of, switchMap, tap } from 'rxjs';
+import { Subscription, of, switchMap } from 'rxjs';
 import { TasksService } from './core/services/tasks/state/tasks.service';
 
 @Component({
