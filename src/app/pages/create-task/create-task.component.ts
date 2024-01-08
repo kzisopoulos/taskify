@@ -33,7 +33,6 @@ export class CreateTaskComponent {
         note: this.createTaskForm.value.note || '',
         priority: this.createTaskForm.value.priority || '',
         done: false,
-        userId: this.authService.getUserId() || 0,
       })
       .pipe(
         tap((task) => {

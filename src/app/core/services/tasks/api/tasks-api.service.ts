@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { RouteResponse } from '../../../models/response.interface';
 import {
   CreateTaskBodyProps,
@@ -18,15 +18,26 @@ export class TasksApiService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getTasks(): Observable<RouteResponse<TaskRouteResponse[]>> {
-    const getTasksUrl = this.url + `/${this.authService.getUserId()}`;
-    return this.http.get<RouteResponse<TaskRouteResponse[]>>(getTasksUrl);
+    return this.authService.id$.pipe(
+      switchMap((userId) => {
+        const getTasksUrl = this.url + `/${userId}`;
+        return this.http.get<RouteResponse<TaskRouteResponse[]>>(getTasksUrl);
+      })
+    );
   }
 
   addTask(
-    body: CreateTaskBodyProps
+    body: Omit<CreateTaskBodyProps, 'userId'>
   ): Observable<RouteResponse<TaskRouteResponse>> {
-    const addTaskUrl = this.url;
-    return this.http.post<RouteResponse<TaskRouteResponse>>(addTaskUrl, body);
+    return this.authService.id$.pipe(
+      switchMap((userId) => {
+        const addTaskUrl = this.url;
+        return this.http.post<RouteResponse<TaskRouteResponse>>(addTaskUrl, {
+          ...body,
+          userId,
+        });
+      })
+    );
   }
 
   updateTask(

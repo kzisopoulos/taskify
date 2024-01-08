@@ -14,3 +14,10 @@ export interface LoginBodyProps {
   username: string;
   password: string;
 }
+
+export interface AuthStateInterface {
+  username: string;
+  id: number;
+  accessToken: string;
+  isLoggedIn: boolean;
+}

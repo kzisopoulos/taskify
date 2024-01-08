@@ -1,48 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import {
-  heroBars4,
-  heroXMark,
-  heroPlus,
-  heroPaperAirplane,
-} from '@ng-icons/heroicons/outline';
 import { RouterLink } from '@angular/router';
-import { TailwindUtilService } from '../../core/utils/tailwind-util.service';
+import { AuthService } from '../../core/services/auth/state/auth.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, NgIconComponent, RouterLink],
-  providers: [
-    provideIcons({ heroBars4, heroXMark, heroPaperAirplane, heroPlus }),
-  ],
+  imports: [CommonModule, RouterLink],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
-  constructor(private mergeClasses: TailwindUtilService) {}
+  public username$ = this.authService.username$;
+  constructor(private authService: AuthService) {}
 
-  menuLinks = [
-    {
-      name: 'Create new ',
-      icon: 'heroPlus',
-      link: '/create',
-    },
-    {
-      name: 'Contact',
-      icon: 'heroPaperAirplane',
-      link: '/contact',
-    },
-  ];
-
-  sidebarOpen = false;
-
-  cn(...classes: string[]): string {
-    return this.mergeClasses.cn(...classes);
-  }
-
-  toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
+  public logout() {
+    return this.authService.handleLogout().subscribe();
   }
 }

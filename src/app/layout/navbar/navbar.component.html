@@ -1,44 +1,14 @@
-<nav class="relative">
+<nav>
   <div class="flex items-center justify-between p-2">
-    <a
-      routerLink="/"
-      (click)="sidebarOpen = false"
-      class="text-2xl font-black tracking-widest"
-    >
-      Taskify.
-    </a>
-    @if(!sidebarOpen) {
-    <button class="grid place-items-center" (click)="toggleSidebar()">
-      <ng-icon name="heroBars4" class="text-3xl" />
-    </button>
-    } @else {
-    <button class="grid place-items-center" (click)="toggleSidebar()">
-      <ng-icon name="heroXMark" class="text-3xl" />
-    </button>
-    }
+    <a routerLink="/" class="text-2xl font-black tracking-widest"> Taskify. </a>
+    <div *ngIf="username$ | async as username" class="flex gap-2 items-center">
+      <p>Hello {{ username }}</p>
+      <button
+        (click)="logout()"
+        class="bg-red-500 text-white px-2 py-1 rounded"
+      >
+        Logout
+      </button>
+    </div>
   </div>
-  <!-- Menu -->
-  @if(sidebarOpen) {
-  <div
-    [ngClass]="
-      cn(
-        'absolute  bg-gray-700 w-full rounded-lg p-2 flex flex-col justify-between text-xl',
-        sidebarOpen && 'h-28 z-10 opacity-100'
-      )
-    "
-  >
-    @for(link of menuLinks; track link.name) {
-    <a
-      [routerLink]="link.link"
-      class="p-2 flex items-center gap-4 hover:bg-gray-800 rounded-lg cursor-pointer justify-center"
-      (click)="toggleSidebar()"
-    >
-      <div>
-        {{ link.name }}
-      </div>
-      <ng-icon [name]="link.icon" />
-    </a>
-    }
-  </div>
-  }
 </nav>

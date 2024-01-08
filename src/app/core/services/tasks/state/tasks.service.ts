@@ -28,7 +28,7 @@ export class TasksService {
       })
     );
   }
-  public createTask(body: CreateTaskBodyProps) {
+  public createTask(body: Omit<CreateTaskBodyProps, 'userId'>) {
     return this.tasksApiService.addTask(body).pipe(
       tap((task) => {
         const oldTasks = this.tasksSubject.getValue();
