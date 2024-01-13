@@ -6,8 +6,5 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './primary-button.component.html',
-  styleUrl: './primary-button.component.css'
 })
-export class PrimaryButtonComponent {
-
-}
+export class PrimaryButtonComponent {}
