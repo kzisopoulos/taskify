@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TasksService } from '../../core/services/tasks/state/tasks.service';
@@ -10,7 +10,7 @@ import { map } from 'rxjs';
   imports: [CommonModule],
   templateUrl: './edit-task.component.html',
 })
-export class EditTaskComponent {
+export class EditTaskComponent implements OnInit {
   taskId: number | null = 0;
   task$ = this.taskService.tasks$.pipe(
     map((tasks) => {

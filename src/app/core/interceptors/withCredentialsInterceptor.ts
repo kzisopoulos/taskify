@@ -1,5 +1,5 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export default function withCredentialsInterceptor(
   req: HttpRequest<unknown>,
