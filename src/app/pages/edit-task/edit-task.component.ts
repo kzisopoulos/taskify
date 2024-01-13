@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TasksService } from '../../core/services/tasks/state/tasks.service';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-edit-task',
@@ -10,7 +11,7 @@ import { map } from 'rxjs';
   imports: [CommonModule],
   templateUrl: './edit-task.component.html',
 })
-export class EditTaskComponent implements OnInit {
+export class EditTaskComponent {
   taskId: number | null = 0;
   task$ = this.taskService.tasks$.pipe(
     map((tasks) => {
@@ -18,12 +19,16 @@ export class EditTaskComponent implements OnInit {
     })
   );
   constructor(
+    private destroyRef: DestroyRef,
     private route: ActivatedRoute,
     private taskService: TasksService
   ) {
-    this.taskId = Number(this.route.snapshot.paramMap.get('id'));
-  }
-  ngOnInit(): void {
-    this.taskId = Number(this.route.snapshot.paramMap.get('id'));
+    this.route.params
+      .pipe(
+        tap(console.log),
+        map(({ id }) => id),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((id) => (this.taskId = Number(id)));
   }
 }

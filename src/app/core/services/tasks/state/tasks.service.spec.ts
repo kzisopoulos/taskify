@@ -1,14 +1,13 @@
-import { TestBed } from '@angular/core/testing';
 import { TasksService } from './tasks.service';
+import { TasksApiService } from '../api/tasks-api.service';
+import { createSpyObj } from '../../../utils/create-spy-obj';
 
 describe('TasksApiervice', () => {
   let service: TasksService;
-
+  let tasksApiServiceMock: jest.Mocked<TasksApiService>;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TasksService],
-    });
-    service = TestBed.inject(TasksService);
+    tasksApiServiceMock = createSpyObj(TasksApiService);
+    service = new TasksService(tasksApiServiceMock);
   });
 
   it('should be created', () => {

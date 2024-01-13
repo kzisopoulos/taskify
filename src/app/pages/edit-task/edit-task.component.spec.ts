@@ -1,20 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ActivatedRoute, Params } from '@angular/router';
+import { TasksService } from '../../core/services/tasks/state/tasks.service';
+import { createSpyObj } from '../../core/utils/create-spy-obj';
 import { EditTaskComponent } from './edit-task.component';
+import { Subject, of } from 'rxjs';
+import { DestroyRef } from '@angular/core';
 
 describe('EditTaskComponent', () => {
   let component: EditTaskComponent;
-  let fixture: ComponentFixture<EditTaskComponent>;
+  let destoryRefMock: jest.Mocked<DestroyRef>;
+  let tasksServiceMock: jest.Mocked<TasksService>;
+  let activatedRouteMock: jest.Mocked<ActivatedRoute>;
+
+  const paramsSubject = new Subject<Params>();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [EditTaskComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(EditTaskComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    destoryRefMock = createSpyObj(DestroyRef, ['onDestroy']);
+    activatedRouteMock = createSpyObj(ActivatedRoute);
+    activatedRouteMock.params = paramsSubject.asObservable();
+    tasksServiceMock = createSpyObj(TasksService);
+    tasksServiceMock.tasks$ = of([]);
+    component = new EditTaskComponent(
+      destoryRefMock,
+      activatedRouteMock,
+      tasksServiceMock
+    );
   });
 
   it('should create', () => {
