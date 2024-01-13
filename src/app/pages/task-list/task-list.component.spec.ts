@@ -1,20 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { Router } from '@angular/router';
+import { TasksService } from '../../core/services/tasks/state/tasks.service';
 import { TaskListComponent } from './task-list.component';
+import { createSpyObj } from '../../core/utils/create-spy-obj';
+import { of } from 'rxjs';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
-  let fixture: ComponentFixture<TaskListComponent>;
+  let tasksServiceMock: jest.Mocked<TasksService>;
+  let router: Router;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TaskListComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(TaskListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    tasksServiceMock = createSpyObj(TasksService);
+    tasksServiceMock.tasks$ = of([]);
+    component = new TaskListComponent(tasksServiceMock, router);
   });
 
   it('should create', () => {

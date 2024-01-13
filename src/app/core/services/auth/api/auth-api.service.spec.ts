@@ -1,12 +1,14 @@
-import { TestBed } from '@angular/core/testing';
 import { AuthApiService } from './auth-api.service';
+import { HttpClient } from '@angular/common/http';
+import { createSpyObj } from '../../../utils/create-spy-obj';
 
 describe('AuthApiService', () => {
   let service: AuthApiService;
+  let httpClientMock: jest.Mocked<HttpClient>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthApiService);
+    httpClientMock = createSpyObj(HttpClient);
+    service = new AuthApiService(httpClientMock);
   });
 
   it('should be created', () => {

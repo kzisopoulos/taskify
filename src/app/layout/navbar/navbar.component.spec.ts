@@ -1,20 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { AuthService } from '../../core/services/auth/state/auth.service';
 import { NavbarComponent } from './navbar.component';
+import { createSpyObj } from '../../core/utils/create-spy-obj';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
+  let authServiceMock: jest.Mocked<AuthService>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NavbarComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(NavbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    authServiceMock = createSpyObj(AuthService);
+    component = new NavbarComponent(authServiceMock);
   });
 
   it('should create', () => {
