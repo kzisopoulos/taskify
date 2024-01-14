@@ -1,7 +1,39 @@
 <div *ngIf="task$ | async as task">
-  <div>edit task works</div>
-  <div>{{ task.id }}</div>
-  <div>{{ task.title }}</div>
-  <div>{{ task.note }}</div>
-  <div>{{ task.priority }}</div>
+  <form
+    [formGroup]="editTaskForm"
+    (ngSubmit)="onEditTaskSubmit(task.id)"
+    class="flex flex-col gap-2"
+  >
+    <div class="flex flex-col gap-1">
+      <label for="title">Title:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        formControlName="title"
+        class="bg-gray-800 p-1 rounded-md"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="note">Note:</label>
+      <input
+        type="text"
+        id="note"
+        name="note"
+        formControlName="note"
+        class="bg-gray-800 p-1 rounded-md"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="priority">Priority:</label>
+      <input
+        type="text"
+        id="priority"
+        name="priority"
+        formControlName="priority"
+        class="bg-gray-800 p-1 rounded-md"
+      />
+    </div>
+    <button type="submit" class="bg-blue-500 p-2 rounded-md">Edit</button>
+  </form>
 </div>
