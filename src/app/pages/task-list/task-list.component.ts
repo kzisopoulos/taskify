@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -11,7 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { IconButtonComponent } from '../../components/ui/icon-button/icon-button.component';
 import { TasksService } from '../../core/services/tasks/state/tasks.service';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { TaskRouteResponse } from '../../core/models/task.interface';
 @Component({
   selector: 'app-task-list',
@@ -20,30 +20,39 @@ import { TaskRouteResponse } from '../../core/models/task.interface';
   providers: [provideIcons({ heroPencil, heroCheck, heroPlus, heroTrash })],
   templateUrl: './task-list.component.html',
 })
-export class TaskListComponent {
-  constructor(private taskService: TasksService, private router: Router) {}
-  completedTasks$ = this.taskService.tasks$.pipe(
-    map((tasks) => tasks?.filter((task) => task.done))
-  );
-  pendingTasks$ = this.taskService.tasks$.pipe(
-    map((tasks) => tasks?.filter((task) => !task.done))
-  );
+export class TaskListComponent implements OnInit {
+  public constructor(
+    private taskService: TasksService,
+    private router: Router
+  ) {}
 
-  completeTask(task: TaskRouteResponse) {
+  public completedTasks$!: Observable<TaskRouteResponse[] | undefined>;
+  public pendingTasks$!: Observable<TaskRouteResponse[] | undefined>;
+
+  public ngOnInit(): void {
+    this.completedTasks$ = this.taskService.tasks$.pipe(
+      map((tasks) => tasks?.filter((task) => task.done))
+    );
+    this.pendingTasks$ = this.taskService.tasks$.pipe(
+      map((tasks) => tasks?.filter((task) => !task.done))
+    );
+  }
+
+  public completeTask(task: TaskRouteResponse) {
     this.taskService
       .updateTask(task.id, { ...task, done: true })
       .subscribe((res) => res);
   }
 
-  createTask() {
+  public createTask() {
     this.router.navigate(['/create']);
   }
 
-  editTask(id: number) {
+  public editTask(id: number) {
     this.router.navigate([`/edit-task/${id}`]);
   }
 
-  deleteTask(id: number) {
+  public deleteTask(id: number) {
     this.taskService.deleteTask(id).subscribe((res) => res);
   }
 }

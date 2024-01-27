@@ -19,9 +19,9 @@ type AuthPage = 'login' | 'signup';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent implements OnDestroy {
-  activePage: AuthPage = 'login';
+  public activePage: AuthPage = 'login';
   public authSubscription: Subscription;
-  constructor(
+  public constructor(
     private authService: AuthService,
     private tasksService: TasksService,
     private router: Router
@@ -37,22 +37,22 @@ export class AuthComponent implements OnDestroy {
       )
       .subscribe();
   }
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }
 
-  loginForm = new FormGroup({
+  public loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
 
-  registerForm = new FormGroup({
+  public registerForm = new FormGroup({
     username: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
 
-  onLoginSubmit() {
+  public onLoginSubmit() {
     this.authService
       .handleLogin({
         username: this.loginForm.value.username!,
@@ -71,7 +71,7 @@ export class AuthComponent implements OnDestroy {
       .subscribe();
   }
 
-  onRegisterSubmit() {
+  public onRegisterSubmit() {
     this.authService
       .handleRegister({
         username: this.registerForm.value.username!,
@@ -91,7 +91,7 @@ export class AuthComponent implements OnDestroy {
       .subscribe();
   }
 
-  setActivePage(page: AuthPage) {
+  public setActivePage(page: AuthPage) {
     this.activePage = page;
   }
 }

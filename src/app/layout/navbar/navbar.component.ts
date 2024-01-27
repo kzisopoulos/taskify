@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth/state/auth.service';
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
-  constructor(private authService: AuthService) {}
+  public constructor(private authService: AuthService) {}
   public username$ = this.authService.username$;
 
   public logout() {

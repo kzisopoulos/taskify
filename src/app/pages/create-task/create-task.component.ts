@@ -12,16 +12,19 @@ import { Router } from '@angular/router';
   templateUrl: './create-task.component.html',
 })
 export class CreateTaskComponent {
-  constructor(private taskService: TasksService, private router: Router) {}
+  public constructor(
+    private taskService: TasksService,
+    private router: Router
+  ) {}
   private fb = new FormBuilder();
 
-  createTaskForm = this.fb.nonNullable.group({
+  public createTaskForm = this.fb.nonNullable.group({
     title: ['', Validators.required],
     note: ['', Validators.required],
     priority: ['', Validators.required],
   });
 
-  onCreateTaskSubmit() {
+  public onCreateTaskSubmit() {
     this.taskService
       .createTask({
         title: this.createTaskForm.value.title || '',

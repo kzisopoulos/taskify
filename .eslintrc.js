@@ -9,5 +9,11 @@ module.exports = {
   ],
   rules: {
     // Add your custom rules here
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        accessibility: "explicit",
+      },
+    ],
   },
 };
