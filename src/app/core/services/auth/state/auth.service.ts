@@ -13,7 +13,7 @@ import { RouteResponse } from '../../../models/response.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private authApiService: AuthApiService) {}
+  public constructor(private authApiService: AuthApiService) {}
 
   private authStateSubject = new BehaviorSubject<AuthStateInterface | null>(
     null

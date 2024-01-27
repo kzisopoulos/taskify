@@ -23,9 +23,8 @@ import { TasksService } from './core/services/tasks/state/tasks.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnDestroy {
-  title = 'Taskify App';
   public authSubscription: Subscription;
-  constructor(
+  public constructor(
     private authService: AuthService,
     private tasksService: TasksService,
     private router: Router
@@ -43,7 +42,7 @@ export class AppComponent implements OnDestroy {
         this.router.navigate(['']);
       });
   }
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }
 }

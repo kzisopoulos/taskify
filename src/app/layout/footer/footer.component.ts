@@ -8,5 +8,5 @@ import { CommonModule } from '@angular/common';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
-  year = new Date().getFullYear();
+  public year = new Date().getFullYear();
 }

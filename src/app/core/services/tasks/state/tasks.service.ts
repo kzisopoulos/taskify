@@ -14,7 +14,7 @@ export class TasksService {
   private tasksSubject = new BehaviorSubject<TaskRouteResponse[] | null>(null);
   public tasks$ = this.tasksSubject.asObservable();
 
-  constructor(private tasksApiService: TasksApiService) {}
+  public constructor(private tasksApiService: TasksApiService) {}
 
   public loadTasks() {
     return this.tasksApiService.getTasks().pipe(

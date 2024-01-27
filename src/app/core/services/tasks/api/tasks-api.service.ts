@@ -15,9 +15,12 @@ import { AuthService } from '../../auth/state/auth.service';
 })
 export class TasksApiService {
   private url = environment.apiUrl + '/tasks';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  public constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
-  getTasks(): Observable<RouteResponse<TaskRouteResponse[]>> {
+  public getTasks(): Observable<RouteResponse<TaskRouteResponse[]>> {
     return this.authService.id$.pipe(
       switchMap((userId) => {
         const getTasksUrl = this.url + `/${userId}`;
@@ -26,7 +29,7 @@ export class TasksApiService {
     );
   }
 
-  addTask(
+  public addTask(
     body: Omit<CreateTaskBodyProps, 'userId'>
   ): Observable<RouteResponse<TaskRouteResponse>> {
     return this.authService.id$.pipe(
@@ -40,7 +43,7 @@ export class TasksApiService {
     );
   }
 
-  updateTask(
+  public updateTask(
     taskId: number,
     body: UpdateTaskBodyProps
   ): Observable<RouteResponse<TaskRouteResponse>> {
@@ -48,7 +51,7 @@ export class TasksApiService {
     return this.http.put<RouteResponse<TaskRouteResponse>>(updateTaskUrl, body);
   }
 
-  deleteTask(taskId: number): Observable<undefined> {
+  public deleteTask(taskId: number): Observable<undefined> {
     const deleteTaskUrl = this.url + `/${taskId}`;
     return this.http.delete<undefined>(deleteTaskUrl);
   }

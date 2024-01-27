@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
   providedIn: 'root',
 })
 export class TailwindUtilService {
-  cn(...classes: string[]): string {
+  public cn(...classes: string[]): string {
     return twMerge(clsx(classes));
   }
 }
