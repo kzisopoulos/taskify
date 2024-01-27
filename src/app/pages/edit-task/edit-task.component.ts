@@ -47,7 +47,7 @@ export class EditTaskComponent implements OnInit {
     );
   }
 
-  private editTaskForm = this.fb.nonNullable.group({
+  public editTaskForm = this.fb.nonNullable.group({
     title: ['', Validators.required],
     note: ['', Validators.required],
     priority: ['', Validators.required],
