@@ -5,8 +5,8 @@
     </app-icon-button>
   </div>
   <h2 class="text-xl text-center">Pending</h2>
-  <div class="flex-1 max-h-[50%] h-full bg-gray-800">
-    <div class="p-2 rounded-lg overflow-y-auto">
+  <div class="flex-1 max-h-[50%] h-full bg-gray-800 overflow-y-auto">
+    <div class="p-2 rounded-lg">
       @for(task of pendingTasks$ | async; track task.id){
       <div
         class="p-3 text-lg rounded-lg flex items-center justify-between hover:bg-gray-900"
@@ -39,8 +39,8 @@
     </div>
   </div>
   <h2 class="text-xl text-center">Completed</h2>
-  <div class="flex-1 max-h-[50%] h-full bg-gray-800">
-    <div class="p-2 rounded-lg overflow-y-auto">
+  <div class="flex-1 max-h-[50%] h-full bg-gray-800 overflow-y-auto">
+    <div class="p-2 rounded-lg">
       @for(task of completedTasks$ | async; track task.id){
       <div
         class="p-3 text-lg rounded-lg flex items-center justify-between hover:bg-gray-900"
