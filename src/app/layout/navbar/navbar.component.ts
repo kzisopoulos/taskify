@@ -13,7 +13,7 @@ export class NavbarComponent {
   public constructor(private authService: AuthService) {}
   public username$ = this.authService.username$;
 
-  public logout() {
-    return this.authService.handleLogout().subscribe();
+  public logout(): void {
+    this.authService.handleLogout();
   }
 }

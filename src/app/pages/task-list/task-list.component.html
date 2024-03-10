@@ -1,4 +1,7 @@
-<section class="h-full py-10 flex flex-col gap-2 justify-between relative">
+<section
+  class="h-full py-10 flex flex-col gap-2 justify-between relative"
+  *ngrxLet="tasks$ as tasks"
+>
   <div class="absolute -bottom-1 right-5" (click)="createTask()">
     <app-icon-button>
       <ng-icon name="heroPlus"></ng-icon>

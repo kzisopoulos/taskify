@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, map, take, tap } from 'rxjs';
 import { AuthApiService } from '../api/auth-api.service';
 import {
   AuthRouteResponse,
@@ -36,30 +36,42 @@ export class AuthService {
     map((state) => state?.isLoggedIn || false)
   );
 
-  public handleLogin(body: LoginBodyProps) {
-    return this.authApiService.login(body).pipe(
-      tap((value) => {
-        this.setState(value);
-        return value;
-      })
-    );
+  public handleLogin(body: LoginBodyProps): void {
+    this.authApiService
+      .login(body)
+      .pipe(
+        take(1),
+        tap((value) => {
+          this.setState(value);
+          return value;
+        })
+      )
+      .subscribe();
   }
-  public handleRegister(body: RegisterBodyProps) {
-    return this.authApiService.register(body).pipe(
-      tap((value) => {
-        this.setState(value);
-        return value;
-      })
-    );
+  public handleRegister(body: RegisterBodyProps): void {
+    this.authApiService
+      .register(body)
+      .pipe(
+        take(1),
+        tap((value) => {
+          this.setState(value);
+          return value;
+        })
+      )
+      .subscribe();
   }
 
-  public handleLogout() {
-    return this.authApiService.logout().pipe(
-      tap(() => {
-        this.authStateSubject.next(null);
-        window.location.reload();
-      })
-    );
+  public handleLogout(): void {
+    this.authApiService
+      .logout()
+      .pipe(
+        take(1),
+        tap(() => {
+          this.authStateSubject.next(null);
+          window.location.reload();
+        })
+      )
+      .subscribe();
   }
 
   private setState(value: RouteResponse<AuthRouteResponse>) {

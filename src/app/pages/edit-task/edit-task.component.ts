@@ -54,17 +54,12 @@ export class EditTaskComponent implements OnInit {
   });
 
   public onEditTaskSubmit(taskId: number) {
-    this.taskService
-      .updateTask(taskId, {
-        title: this.editTaskForm.value.title || '',
-        note: this.editTaskForm.value.note || '',
-        priority: this.editTaskForm.value.priority || '',
-        done: false,
-      })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap(() => this.router.navigate(['']))
-      )
-      .subscribe();
+    this.taskService.updateTask(taskId, {
+      title: this.editTaskForm.value.title || '',
+      note: this.editTaskForm.value.note || '',
+      priority: this.editTaskForm.value.priority || '',
+      done: false,
+    });
+    this.router.navigate(['']);
   }
 }

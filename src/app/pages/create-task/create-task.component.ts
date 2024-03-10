@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TasksService } from '../../core/services/tasks/state/tasks.service';
-import { tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -25,19 +24,12 @@ export class CreateTaskComponent {
   });
 
   public onCreateTaskSubmit() {
-    this.taskService
-      .createTask({
-        title: this.createTaskForm.value.title || '',
-        note: this.createTaskForm.value.note || '',
-        priority: this.createTaskForm.value.priority || '',
-        done: false,
-      })
-      .pipe(
-        tap((task) => {
-          this.router.navigate(['']);
-          return task;
-        })
-      )
-      .subscribe();
+    this.taskService.createTask({
+      title: this.createTaskForm.value.title || '',
+      note: this.createTaskForm.value.note || '',
+      priority: this.createTaskForm.value.priority || '',
+      done: false,
+    });
+    this.router.navigate(['']);
   }
 }
