@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -8,37 +8,29 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/state/auth.service';
-import { Subscription, of, switchMap, tap } from 'rxjs';
-import { TasksService } from '../../core/services/tasks/state/tasks.service';
+import { Observable, tap } from 'rxjs';
+import { LetDirective } from '@ngrx/component';
 type AuthPage = 'login' | 'signup';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LetDirective],
   templateUrl: './auth.component.html',
 })
-export class AuthComponent implements OnDestroy {
+export class AuthComponent implements OnInit {
   public activePage: AuthPage = 'login';
-  public authSubscription: Subscription;
+  public isLoggedIn$!: Observable<boolean>;
   public constructor(
     private authService: AuthService,
-    private tasksService: TasksService,
     private router: Router
-  ) {
-    this.authSubscription = this.authService.isLoggedIn$
-      .pipe(
-        tap((value) => {
-          if (value) {
-            this.router.navigate(['']);
-          }
-          return value;
-        })
-      )
-      .subscribe();
-  }
-  public ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
+  ) {}
+  public ngOnInit(): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn$.pipe(
+      tap((value) => {
+        if (value) this.router.navigate(['']);
+      })
+    );
   }
 
   public loginForm = new FormGroup({
@@ -53,42 +45,18 @@ export class AuthComponent implements OnDestroy {
   });
 
   public onLoginSubmit() {
-    this.authService
-      .handleLogin({
-        username: this.loginForm.value.username!,
-        password: this.loginForm.value.password!,
-      })
-      .pipe(
-        tap((value) => {
-          this.router.navigate(['']);
-          return value;
-        }),
-        switchMap((value) => {
-          if (value.success) return this.tasksService.loadTasks();
-          else return of(null);
-        })
-      )
-      .subscribe();
+    this.authService.handleLogin({
+      username: this.loginForm.value.username!,
+      password: this.loginForm.value.password!,
+    });
   }
 
   public onRegisterSubmit() {
-    this.authService
-      .handleRegister({
-        username: this.registerForm.value.username!,
-        email: this.registerForm.value.email!,
-        password: this.registerForm.value.password!,
-      })
-      .pipe(
-        tap((value) => {
-          this.router.navigate(['']);
-          return value;
-        }),
-        switchMap((value) => {
-          if (value.success) return this.tasksService.loadTasks();
-          else return of(null);
-        })
-      )
-      .subscribe();
+    this.authService.handleRegister({
+      username: this.registerForm.value.username!,
+      email: this.registerForm.value.email!,
+      password: this.registerForm.value.password!,
+    });
   }
 
   public setActivePage(page: AuthPage) {

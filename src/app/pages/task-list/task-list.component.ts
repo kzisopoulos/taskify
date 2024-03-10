@@ -13,10 +13,12 @@ import { IconButtonComponent } from '../../components/ui/icon-button/icon-button
 import { TasksService } from '../../core/services/tasks/state/tasks.service';
 import { Observable, map } from 'rxjs';
 import { TaskRouteResponse } from '../../core/models/task.interface';
+import { LetDirective } from '@ngrx/component';
+import { RouteResponse } from '../../core/models/response.interface';
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, NgIconComponent, IconButtonComponent],
+  imports: [CommonModule, NgIconComponent, IconButtonComponent, LetDirective],
   providers: [provideIcons({ heroPencil, heroCheck, heroPlus, heroTrash })],
   templateUrl: './task-list.component.html',
 })
@@ -28,8 +30,11 @@ export class TaskListComponent implements OnInit {
 
   public completedTasks$!: Observable<TaskRouteResponse[] | undefined>;
   public pendingTasks$!: Observable<TaskRouteResponse[] | undefined>;
+  public tasks$!: Observable<RouteResponse<TaskRouteResponse[]>>;
 
   public ngOnInit(): void {
+    this.tasks$ = this.taskService.loadTasks();
+
     this.completedTasks$ = this.taskService.tasks$.pipe(
       map((tasks) => tasks?.filter((task) => task.done))
     );
@@ -39,9 +44,7 @@ export class TaskListComponent implements OnInit {
   }
 
   public completeTask(task: TaskRouteResponse) {
-    this.taskService
-      .updateTask(task.id, { ...task, done: true })
-      .subscribe((res) => res);
+    this.taskService.updateTask(task.id, { ...task, done: true });
   }
 
   public createTask() {
@@ -53,6 +56,6 @@ export class TaskListComponent implements OnInit {
   }
 
   public deleteTask(id: number) {
-    this.taskService.deleteTask(id).subscribe((res) => res);
+    this.taskService.deleteTask(id);
   }
 }
