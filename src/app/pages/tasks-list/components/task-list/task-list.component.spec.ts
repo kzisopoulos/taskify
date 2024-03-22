@@ -1,11 +1,11 @@
-import { AuthService } from '../../../../core/services/auth/state/auth-state.service';
-import { TasksService } from '../../../../core/services/tasks/state/tasks-state.service';
+import { AuthStateService } from '../../../../core/services/auth/state/auth-state.service';
+import { TasksStateService } from '../../../../core/services/tasks/state/tasks-state.service';
 import { TaskListComponent } from './task-list.component';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
-  let tasksStateServiceMock: jest.Mocked<TasksService>;
-  let authStateServiceMock: jest.Mocked<AuthService>;
+  let tasksStateServiceMock: jest.Mocked<TasksStateService>;
+  let authStateServiceMock: jest.Mocked<AuthStateService>;
 
   beforeEach(() => {
     component = new TaskListComponent(

@@ -1,12 +1,12 @@
 import { of } from 'rxjs';
 import { createSpyObject } from '../../../utils/create-spy-obj';
 import { AuthApiService } from '../api/auth-api.service';
-import { AuthService } from './auth-state.service';
+import { AuthStateService } from './auth-state.service';
 import { RouteResponse } from '../../../models/response.interface';
 import { AuthRouteResponse } from '../../../models/auth.interface';
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let service: AuthStateService;
   let authApiServiceMock: jest.Mocked<AuthApiService>;
 
   const mock: RouteResponse<AuthRouteResponse> = {
@@ -25,7 +25,7 @@ describe('AuthService', () => {
       'register',
     ]);
     authApiServiceMock.refreshToken.mockReturnValue(of(mock));
-    service = new AuthService(authApiServiceMock);
+    service = new AuthStateService(authApiServiceMock);
   });
 
   it('should be created', () => {

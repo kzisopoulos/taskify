@@ -8,7 +8,7 @@ import {
   TaskRouteResponse,
   UpdateTaskBodyProps,
 } from '../../../models/task.interface';
-import { AuthService } from '../../auth/state/auth-state.service';
+import { AuthStateService } from '../../auth/state/auth-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +18,11 @@ export class TasksApiService {
 
   public constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authStateService: AuthStateService
   ) {}
 
   public getTasks(): Observable<RouteResponse<TaskRouteResponse[]>> {
-    return this.authService.id$.pipe(
+    return this.authStateService.id$.pipe(
       switchMap((userId) => {
         const getTasksUrl = this.url + `/${userId}`;
         return this.http.get<RouteResponse<TaskRouteResponse[]>>(getTasksUrl);
@@ -33,7 +33,7 @@ export class TasksApiService {
   public addTask(
     body: Omit<CreateTaskBodyProps, 'userId'>
   ): Observable<RouteResponse<TaskRouteResponse>> {
-    return this.authService.id$.pipe(
+    return this.authStateService.id$.pipe(
       switchMap((userId) => {
         const addTaskUrl = this.url;
         return this.http.post<RouteResponse<TaskRouteResponse>>(addTaskUrl, {

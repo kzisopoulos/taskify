@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth/state/auth-state.service';
+import { AuthStateService } from '../../core/services/auth/state/auth-state.service';
 import { Observable, tap } from 'rxjs';
 import { LetDirective } from '@ngrx/component';
 type AuthPage = 'login' | 'signup';
@@ -22,11 +22,11 @@ export class AuthComponent implements OnInit {
   public activePage: AuthPage = 'login';
   public isLoggedIn$!: Observable<boolean>;
   public constructor(
-    private authService: AuthService,
+    private authStateService: AuthStateService,
     private router: Router
   ) {}
   public ngOnInit(): void {
-    this.isLoggedIn$ = this.authService.isLoggedIn$.pipe(
+    this.isLoggedIn$ = this.authStateService.isLoggedIn$.pipe(
       tap((value) => {
         if (value) this.router.navigate(['']);
       })
@@ -45,14 +45,14 @@ export class AuthComponent implements OnInit {
   });
 
   public onLoginSubmit() {
-    this.authService.handleLogin({
+    this.authStateService.handleLogin({
       username: this.loginForm.value.username!,
       password: this.loginForm.value.password!,
     });
   }
 
   public onRegisterSubmit() {
-    this.authService.handleRegister({
+    this.authStateService.handleRegister({
       username: this.registerForm.value.username!,
       email: this.registerForm.value.email!,
       password: this.registerForm.value.password!,

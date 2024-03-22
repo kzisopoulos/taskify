@@ -6,8 +6,8 @@ import {
 } from '../../../../core/models/task.interface';
 import { NgIconComponent } from '@ng-icons/core';
 import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
-import { TasksService } from '../../../../core/services/tasks/state/tasks-state.service';
-import { AuthService } from '../../../../core/services/auth/state/auth-state.service';
+import { TasksStateService } from '../../../../core/services/tasks/state/tasks-state.service';
+import { AuthStateService } from '../../../../core/services/auth/state/auth-state.service';
 import { BehaviorSubject, Observable, map, pairwise, tap } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { TaskListTheme } from '../../../../core/models/task.theme.interface';
@@ -40,8 +40,8 @@ export class TaskListComponent implements OnInit {
   public idToEdit$!: Observable<string>;
 
   public constructor(
-    private tasksService: TasksService,
-    private authService: AuthService
+    private tasksStateService: TasksStateService,
+    private authStateService: AuthStateService
   ) {}
   public ngOnInit(): void {
     this.styleConfig = taskListStyleConfig[this.listType];
@@ -89,17 +89,17 @@ export class TaskListComponent implements OnInit {
     }
 
     if (updatedTask.id === '-1') {
-      this.tasksService.createTask({
+      this.tasksStateService.createTask({
         status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
         title: updatedTask.title,
       });
     } else {
-      this.tasksService.updateTask(updatedTask.id, updatedTask);
+      this.tasksStateService.updateTask(updatedTask.id, updatedTask);
     }
   }
 
   public handleDeleteClick(taskId: string): void {
-    this.tasksService.deleteTask(taskId);
+    this.tasksStateService.deleteTask(taskId);
     this.idToEditSubject.next('0');
   }
 
@@ -112,7 +112,7 @@ export class TaskListComponent implements OnInit {
           id: '-1',
           status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
           title: '',
-          userId: this.authService.getUserId() || '',
+          userId: this.authStateService.getUserId() || '',
         },
       ];
       this.idToEditSubject.next('-1');
