@@ -9,7 +9,7 @@ import {
   heroTrash,
   heroXMark,
 } from '@ng-icons/heroicons/outline';
-import { TasksService } from '../../core/services/tasks/state/tasks-state.service';
+import { TasksStateService } from '../../core/services/tasks/state/tasks-state.service';
 import { Observable, map } from 'rxjs';
 import { TaskRouteResponse } from '../../core/models/task.interface';
 import { LetDirective } from '@ngrx/component';
@@ -46,25 +46,25 @@ import {
 `,
 })
 export class TasksListComponent implements OnInit {
-  public constructor(private taskService: TasksService) {}
+  public constructor(private taskStateService: TasksStateService) {}
 
   public completedTasks$!: Observable<TaskRouteResponse[] | undefined>;
   public pendingTasks$!: Observable<TaskRouteResponse[] | undefined>;
   public tasks$!: Observable<RouteResponse<TaskRouteResponse[]>>;
 
   public ngOnInit(): void {
-    this.tasks$ = this.taskService.loadTasks();
+    this.tasks$ = this.taskStateService.loadTasks();
 
-    this.completedTasks$ = this.taskService.tasks$.pipe(
+    this.completedTasks$ = this.taskStateService.tasks$.pipe(
       map((tasks) => tasks?.filter((task) => task.status === 'DONE'))
     );
-    this.pendingTasks$ = this.taskService.tasks$.pipe(
+    this.pendingTasks$ = this.taskStateService.tasks$.pipe(
       map((tasks) => tasks?.filter((task) => task.status === 'PENDING'))
     );
   }
 
   public deleteTask(id: string) {
-    this.taskService.deleteTask(id);
+    this.taskStateService.deleteTask(id);
   }
 
   public moveTask(event: CdkDragDrop<TaskRouteResponse[]>) {
@@ -84,7 +84,7 @@ export class TasksListComponent implements OnInit {
         event.currentIndex
       );
 
-      this.taskService.updateTask(selectedTask.id, {
+      this.taskStateService.updateTask(selectedTask.id, {
         ...selectedTask,
         status: event.container.id === 'done' ? 'DONE' : 'PENDING',
       });

@@ -1,12 +1,12 @@
-import { TasksService } from '../../core/services/tasks/state/tasks-state.service';
+import { TasksStateService } from '../../core/services/tasks/state/tasks-state.service';
 import { TasksListComponent } from './tasks-list.component';
 
-describe('TaskListComponent', () => {
+describe('TasksListComponent', () => {
   let component: TasksListComponent;
-  let tasksServiceMock: jest.Mocked<TasksService>;
+  let tasksStateServiceMock: jest.Mocked<TasksStateService>;
 
   beforeEach(async () => {
-    component = new TasksListComponent(tasksServiceMock);
+    component = new TasksListComponent(tasksStateServiceMock);
   });
 
   it('should create', () => {

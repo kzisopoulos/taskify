@@ -10,7 +10,7 @@ import { TasksApiService } from '../api/tasks-api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class TasksService {
+export class TasksStateService {
   private tasksSubject = new BehaviorSubject<TaskRouteResponse[] | null>(null);
   public tasks$ = this.tasksSubject.asObservable();
 

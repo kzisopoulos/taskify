@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { AuthService } from './core/services/auth/state/auth-state.service';
+import { AuthStateService } from './core/services/auth/state/auth-state.service';
 import { Observable } from 'rxjs';
 import { LetDirective } from '@ngrx/component';
 import { RouteResponse } from './core/models/response.interface';
@@ -27,8 +27,8 @@ import { AuthRouteResponse } from './core/models/auth.interface';
 })
 export class AppComponent implements OnInit {
   public checkAuth$!: Observable<RouteResponse<AuthRouteResponse>>;
-  public constructor(private authService: AuthService) {}
+  public constructor(private authStateService: AuthStateService) {}
   public ngOnInit(): void {
-    this.checkAuth$ = this.authService.checkAuth$;
+    this.checkAuth$ = this.authStateService.checkAuth$;
   }
 }

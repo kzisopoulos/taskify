@@ -12,7 +12,7 @@ import { RouteResponse } from '../../../models/response.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthStateService {
   public constructor(private authApiService: AuthApiService) {}
 
   private authStateSubject = new BehaviorSubject<AuthStateInterface | null>(

@@ -1,16 +1,16 @@
 import { TasksApiService } from './tasks-api.service';
 import { HttpClient } from '@angular/common/http';
 import { createSpyObj } from '../../../utils/create-spy-obj';
-import { AuthService } from '../../auth/state/auth-state.service';
+import { AuthStateService } from '../../auth/state/auth-state.service';
 
 describe('TasksApiervice', () => {
   let service: TasksApiService;
   let httpClientMock: jest.Mocked<HttpClient>;
-  let authServiceMock: jest.Mocked<AuthService>;
+  let authStateServiceMock: jest.Mocked<AuthStateService>;
   beforeEach(() => {
     httpClientMock = createSpyObj(HttpClient);
-    authServiceMock = createSpyObj(AuthService);
-    service = new TasksApiService(httpClientMock, authServiceMock);
+    authStateServiceMock = createSpyObj(AuthStateService);
+    service = new TasksApiService(httpClientMock, authStateServiceMock);
   });
 
   it('should be created', () => {
