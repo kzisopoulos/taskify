@@ -21,3 +21,5 @@ export interface UpdateTaskBodyProps {
   note: string;
   done: boolean;
 }
+
+export type TaskListType = 'pending' | 'done';

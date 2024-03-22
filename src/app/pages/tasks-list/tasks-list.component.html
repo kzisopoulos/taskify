@@ -1,0 +1,35 @@
+<section
+  class="h-full py-10 flex flex-col gap-2 justify-between relative"
+  *ngrxLet="{
+    tasks: tasks$,
+    pendingTasks: pendingTasks$,
+    completeTasks: completedTasks$
+  } as state"
+>
+  <div class="flex justify-center gap-4">
+    <app-task-list
+      [listType]="'pending'"
+      title="Not started"
+      [tasks]="state.pendingTasks || []"
+      class="w-full max-w-md"
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="state.pendingTasks || []"
+      [cdkDropListConnectedTo]="[doneList]"
+      (cdkDropListDropped)="moveTask($event)"
+      id="pending"
+    ></app-task-list>
+    <app-task-list
+      [listType]="'done'"
+      title="Done"
+      [tasks]="state.completeTasks || []"
+      class="w-full max-w-md"
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="state.completeTasks || []"
+      [cdkDropListConnectedTo]="[todoList]"
+      (cdkDropListDropped)="moveTask($event)"
+      id="done"
+    ></app-task-list>
+  </div>
+</section>

@@ -8,7 +8,7 @@ import {
   TaskRouteResponse,
   UpdateTaskBodyProps,
 } from '../../../models/task.interface';
-import { AuthService } from '../../auth/state/auth.service';
+import { AuthService } from '../../auth/state/auth-state.service';
 
 @Injectable({
   providedIn: 'root',

@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth/state/auth.service';
+import { AuthService } from '../../core/services/auth/state/auth-state.service';
 import { Observable, tap } from 'rxjs';
 import { LetDirective } from '@ngrx/component';
 type AuthPage = 'login' | 'signup';

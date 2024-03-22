@@ -1,0 +1,47 @@
+<div
+  class="p-2 rounded-lg cursor-pointer relative {{
+    styleConfig.listItem.background
+  }}"
+  (mouseenter)="showIcons = true"
+  (mouseleave)="showIcons = false"
+>
+  <ng-container *ngIf="!isEditing; else editForm">
+    {{ task.title }}
+  </ng-container>
+  <ng-template #editForm>
+    <div class="relative">
+      <input
+        type="text"
+        value="hello"
+        [(ngModel)]="newTitle"
+        class="w-full pr-14 bg-transparent border-b border-b-gray-500 outline-none"
+      />
+      <div class="absolute flex items-center gap-1 right-1 top-0.5 z-10">
+        <ng-icon
+          name="heroCheck"
+          class="text-xl hover:text-yellow-500"
+          (click)="handleEdit()"
+        ></ng-icon>
+        <ng-icon
+          name="heroXMark"
+          class="text-xl hover:text-red-500"
+          (click)="handleEditToggle()"
+        ></ng-icon>
+      </div>
+    </div>
+  </ng-template>
+  <div *ngIf="showIcons && !isEditing" class="absolute top-3 right-2">
+    <div class="flex items-center gap-2">
+      <ng-icon
+        name="heroPencil"
+        class="text-lg hover:text-yellow-500"
+        (click)="handleEditToggle()"
+      ></ng-icon>
+      <ng-icon
+        name="heroTrash"
+        class="text-lg hover:text-red-500"
+        (click)="handleDelete()"
+      ></ng-icon>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { AuthService } from './core/services/auth/state/auth.service';
+import { AuthService } from './core/services/auth/state/auth-state.service';
 import { Observable } from 'rxjs';
 import { LetDirective } from '@ngrx/component';
 import { RouteResponse } from './core/models/response.interface';

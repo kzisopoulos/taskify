@@ -1,4 +1,4 @@
-import { AuthService } from '../../core/services/auth/state/auth.service';
+import { AuthService } from '../../core/services/auth/state/auth-state.service';
 import { NavbarComponent } from './navbar.component';
 import { createSpyObj } from '../../core/utils/create-spy-obj';
 

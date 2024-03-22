@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth/state/auth.service';
+import { AuthService } from '../../core/services/auth/state/auth-state.service';
 import { AuthComponent } from './auth.component';
 import { createSpyObj } from '../../core/utils/create-spy-obj';
 import { of } from 'rxjs';
