@@ -8,7 +8,7 @@
 >
   <div class="flex justify-center gap-4">
     <app-task-list
-      [listType]="'pending'"
+      [listType]="'PENDING'"
       title="Not started"
       [tasks]="state.pendingTasks || []"
       class="w-full max-w-md"
@@ -20,7 +20,7 @@
       id="pending"
     ></app-task-list>
     <app-task-list
-      [listType]="'done'"
+      [listType]="'DONE'"
       title="Done"
       [tasks]="state.completeTasks || []"
       class="w-full max-w-md"

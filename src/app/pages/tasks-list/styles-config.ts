@@ -1,7 +1,7 @@
 import { TasksListThemeConfig } from '../../core/models/task.theme.interface';
 
 export const taskListStyleConfig: TasksListThemeConfig = {
-  pending: {
+  PENDING: {
     list: {
       background: 'bg-gray-600/10',
       titleBackground: 'bg-gray-600/50',
@@ -12,7 +12,18 @@ export const taskListStyleConfig: TasksListThemeConfig = {
       background: 'bg-gray-800 hover:bg-gray-700/80',
     },
   },
-  done: {
+  IN_PROGRESS: {
+    list: {
+      background: 'bg-blue-600/10',
+      titleBackground: 'bg-blue-600/50',
+      titleDot: 'bg-white',
+      newButton: 'text-blue-500 hover:bg-blue-500/10',
+    },
+    listItem: {
+      background: 'bg-blue-800 hover:bg-blue-700/80',
+    },
+  },
+  DONE: {
     list: {
       background: 'bg-green-600/10',
       titleBackground: 'bg-green-600/10',

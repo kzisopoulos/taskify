@@ -1,4 +1,4 @@
-import { TaskListType } from './task.interface';
+import { TaskStatus } from './task.interface';
 
 export type TaskListTheme = {
   list: {
@@ -13,5 +13,5 @@ export type TaskListTheme = {
 };
 
 export type TasksListThemeConfig = {
-  [k in TaskListType]: TaskListTheme;
+  [k in TaskStatus]: TaskListTheme;
 };

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import {
-  TaskListType,
+  TaskStatus,
   TaskRouteResponse,
 } from '../../../../core/models/task.interface';
 import { NgIconComponent } from '@ng-icons/core';
@@ -29,15 +29,15 @@ import { taskListStyleConfig } from '../../styles-config';
 })
 export class TaskListComponent implements OnInit {
   @Input({ required: true }) public tasks!: TaskRouteResponse[];
-  @Input({ required: true }) public listType!: TaskListType;
+  @Input({ required: true }) public listType!: TaskStatus;
   @Input({ required: true }) public title!: string;
 
   public styleConfig!: TaskListTheme;
 
   public color!: string;
 
-  private idToEditSubject = new BehaviorSubject<number>(0);
-  public idToEdit$!: Observable<number>;
+  private idToEditSubject = new BehaviorSubject<string>('');
+  public idToEdit$!: Observable<string>;
 
   public constructor(
     private tasksService: TasksService,
@@ -48,20 +48,20 @@ export class TaskListComponent implements OnInit {
     this.idToEdit$ = this.idToEditSubject.asObservable().pipe(
       pairwise(),
       tap(([prev, curr]) => {
-        if (prev === -1 && curr !== -1) {
+        if (prev === '-1' && curr !== '-1') {
           // Discard the new task if it's empty and not being edited
           this.tasks = this.tasks.filter(
-            (task) => task.id !== -1 && task.title !== ''
+            (task) => task.id !== '-1' && task.title !== ''
           );
         }
       }),
       map(([prev, curr]) => {
-        if (curr === -1 && prev !== -1) {
+        if (curr === '-1' && prev !== '-1') {
           // Scenario #1: Cancelling a new task by clicking "X"
-          return 0;
-        } else if (curr === -1 && prev === -1) {
+          return '0';
+        } else if (curr === '-1' && prev === '-1') {
           // Scenario #3: Prevent creating a new shell if one is already open
-          return 0;
+          return '0';
         } else {
           // For other scenarios, maintain the current ID
           return curr;
@@ -70,9 +70,9 @@ export class TaskListComponent implements OnInit {
     );
   }
 
-  public toggleEditMode(taskId: number): void {
+  public toggleEditMode(taskId: string): void {
     if (this.idToEditSubject.getValue() === taskId) {
-      this.idToEditSubject.next(0);
+      this.idToEditSubject.next('0');
       return;
     }
     this.idToEditSubject.next(taskId);
@@ -82,17 +82,15 @@ export class TaskListComponent implements OnInit {
     // Scenario #4: Handling the edit state of existing tasks
     if (this.idToEditSubject.getValue() === updatedTask.id) {
       // If the task is already in edit mode, cancel the edit mode
-      this.idToEditSubject.next(0);
+      this.idToEditSubject.next('0');
     } else {
       // Set the edit mode for the selected task
       this.idToEditSubject.next(updatedTask.id);
     }
 
-    if (updatedTask.id === -1) {
+    if (updatedTask.id === '-1') {
       this.tasksService.createTask({
-        done: this.listType === 'done' ? true : false,
-        note: 'temp',
-        priority: 'temp',
+        status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
         title: updatedTask.title,
       });
     } else {
@@ -100,26 +98,24 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  public handleDeleteClick(taskId: number): void {
+  public handleDeleteClick(taskId: string): void {
     this.tasksService.deleteTask(taskId);
-    this.idToEditSubject.next(0);
+    this.idToEditSubject.next('0');
   }
 
   public handleAddNewTask(): void {
-    if (this.idToEditSubject.getValue() !== -1) {
+    if (this.idToEditSubject.getValue() !== '-1') {
       // Insert one empty task (shell)
       this.tasks = [
         ...this.tasks,
         {
-          id: -1,
-          done: this.listType === 'done' ? true : false,
-          note: 'temp',
-          priority: 'temp',
+          id: '-1',
+          status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
           title: '',
-          userId: this.authService.getUserId() || 0,
+          userId: this.authService.getUserId() || '',
         },
       ];
-      this.idToEditSubject.next(-1);
+      this.idToEditSubject.next('-1');
     }
   }
 }

@@ -45,14 +45,14 @@ export class TasksApiService {
   }
 
   public updateTask(
-    taskId: number,
+    taskId: string,
     body: UpdateTaskBodyProps
   ): Observable<RouteResponse<TaskRouteResponse>> {
     const updateTaskUrl = this.url + `/${taskId}`;
     return this.http.put<RouteResponse<TaskRouteResponse>>(updateTaskUrl, body);
   }
 
-  public deleteTask(taskId: number): Observable<undefined> {
+  public deleteTask(taskId: string): Observable<undefined> {
     const deleteTaskUrl = this.url + `/${taskId}`;
     return this.http.delete<undefined>(deleteTaskUrl);
   }

@@ -82,7 +82,7 @@ export class AuthService {
     if (value.success) {
       this.authStateSubject.next({
         username: value.data?.username || '',
-        id: value.data?.id || -1,
+        id: value.data?.id || '',
         accessToken: value.data?.accessToken || '',
         isLoggedIn: true,
       });
