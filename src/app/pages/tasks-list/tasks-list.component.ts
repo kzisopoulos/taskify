@@ -56,14 +56,14 @@ export class TasksListComponent implements OnInit {
     this.tasks$ = this.taskService.loadTasks();
 
     this.completedTasks$ = this.taskService.tasks$.pipe(
-      map((tasks) => tasks?.filter((task) => task.done))
+      map((tasks) => tasks?.filter((task) => task.status === 'DONE'))
     );
     this.pendingTasks$ = this.taskService.tasks$.pipe(
-      map((tasks) => tasks?.filter((task) => !task.done))
+      map((tasks) => tasks?.filter((task) => task.status === 'PENDING'))
     );
   }
 
-  public deleteTask(id: number) {
+  public deleteTask(id: string) {
     this.taskService.deleteTask(id);
   }
 
@@ -86,7 +86,7 @@ export class TasksListComponent implements OnInit {
 
       this.taskService.updateTask(selectedTask.id, {
         ...selectedTask,
-        done: event.container.id === 'done' ? true : false,
+        status: event.container.id === 'done' ? 'DONE' : 'PENDING',
       });
     }
   }

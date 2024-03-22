@@ -11,7 +11,7 @@ describe('AuthService', () => {
 
   const mock: RouteResponse<AuthRouteResponse> = {
     code: 200,
-    data: { accessToken: '', id: 0, username: '' },
+    data: { accessToken: '', id: '0', username: '' },
     error: null,
     message: '',
     success: true,

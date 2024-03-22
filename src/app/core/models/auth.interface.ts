@@ -1,5 +1,5 @@
 export interface AuthRouteResponse {
-  id: number;
+  id: string;
   username: string;
   accessToken: string;
 }
@@ -17,7 +17,7 @@ export interface LoginBodyProps {
 
 export interface AuthStateInterface {
   username: string;
-  id: number;
+  id: string;
   accessToken: string;
   isLoggedIn: boolean;
 }

@@ -47,7 +47,7 @@ export class TasksService {
       )
       .subscribe();
   }
-  public updateTask(taskId: number, body: UpdateTaskBodyProps) {
+  public updateTask(taskId: string, body: UpdateTaskBodyProps) {
     return this.tasksApiService
       .updateTask(taskId, body)
       .pipe(
@@ -72,7 +72,7 @@ export class TasksService {
       )
       .subscribe();
   }
-  public deleteTask(taskId: number): void {
+  public deleteTask(taskId: string): void {
     this.tasksApiService
       .deleteTask(taskId)
       .pipe(

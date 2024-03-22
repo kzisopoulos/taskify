@@ -1,25 +1,19 @@
 export interface TaskRouteResponse {
-  id: number;
+  id: string;
   title: string;
-  priority: string;
-  note: string;
-  done: boolean;
-  userId: number;
+  status: TaskStatus;
+  userId: string;
 }
 
 export interface CreateTaskBodyProps {
   title: string;
-  priority: string;
-  note: string;
-  done: boolean;
-  userId: number;
+  status: TaskStatus;
+  userId: string;
 }
 
 export interface UpdateTaskBodyProps {
   title: string;
-  priority: string;
-  note: string;
-  done: boolean;
+  status: TaskStatus;
 }
 
-export type TaskListType = 'pending' | 'done';
+export type TaskStatus = 'PENDING' | 'IN_PROGRESS' | 'DONE';

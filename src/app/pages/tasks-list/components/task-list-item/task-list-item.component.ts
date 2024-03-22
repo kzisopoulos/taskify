@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  TaskListType,
+  TaskStatus,
   TaskRouteResponse,
 } from '../../../../core/models/task.interface';
 import { NgIconComponent } from '@ng-icons/core';
@@ -17,15 +17,15 @@ import { taskListStyleConfig } from '../../styles-config';
 })
 export class TaskListItemComponent implements OnInit {
   @Input({ required: true }) public task!: TaskRouteResponse;
-  @Input({ required: true }) public listType!: TaskListType;
+  @Input({ required: true }) public listType!: TaskStatus;
   @Input({ required: true }) public color!: string;
   @Input({ required: true }) public isEditing!: boolean;
 
   public newTitle!: string;
 
-  @Output() public toggleEdit = new EventEmitter<number>();
+  @Output() public toggleEdit = new EventEmitter<string>();
   @Output() public editClick = new EventEmitter<TaskRouteResponse>();
-  @Output() public deleteClick = new EventEmitter<number>();
+  @Output() public deleteClick = new EventEmitter<string>();
 
   public styleConfig!: TaskListTheme;
 
@@ -34,7 +34,7 @@ export class TaskListItemComponent implements OnInit {
   public ngOnInit(): void {
     this.styleConfig = taskListStyleConfig[this.listType];
     this.newTitle = this.task.title;
-    if (this.task.id === -1) {
+    if (this.task.id === '-1') {
       this.isEditing = true;
     }
   }
