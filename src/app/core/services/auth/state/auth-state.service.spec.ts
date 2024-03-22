@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { createSpyObject } from '../../../utils/create-spy-obj';
 import { AuthApiService } from '../api/auth-api.service';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth-state.service';
 import { RouteResponse } from '../../../models/response.interface';
 import { AuthRouteResponse } from '../../../models/auth.interface';
 

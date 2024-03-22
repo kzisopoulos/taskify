@@ -1,0 +1,46 @@
+<div
+  class="h-full flex flex-col p-2 rounded-lg {{ styleConfig.list.background }}"
+>
+  <!-- category title -->
+  <div class="flex gap-2 items-center">
+    <div
+      class="py-0.5 px-2 w-fit rounded-lg flex items-center gap-1 {{
+        styleConfig.list.titleBackground
+      }}"
+    >
+      <div class="w-2 h-2 rounded-full {{ styleConfig.list.titleDot }}"></div>
+      <div class="capitalize">{{ title }}</div>
+    </div>
+    <div>{{ tasks.length }}</div>
+  </div>
+  <!-- end of category title -->
+  <!-- tasks list -->
+  <div class="flex-1 flex flex-col overflow-y-auto py-2 gap-2">
+    @for(task of tasks; track task.id){
+
+    <app-task-list-item
+      [task]="task"
+      [color]="color"
+      (toggleEdit)="toggleEditMode($event)"
+      (editClick)="handleEditClick($event)"
+      (deleteClick)="handleDeleteClick($event)"
+      [isEditing]="(idToEdit$ | async) === task.id"
+      [listType]="listType"
+      cdkDrag
+      [cdkDragData]="task"
+    ></app-task-list-item>
+    }
+  </div>
+  <!-- end oftasks list -->
+  <!-- new button -->
+  <button
+    class="flex items-center px-1 py-2 rounded-lg {{
+      styleConfig.list.newButton
+    }}"
+    (click)="handleAddNewTask()"
+  >
+    <ng-icon name="heroPlus"></ng-icon>
+    New
+  </button>
+  <!-- end of new button -->
+</div>

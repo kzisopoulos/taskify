@@ -74,6 +74,10 @@ export class AuthService {
       .subscribe();
   }
 
+  public getUserId() {
+    return this.authStateSubject.value?.id;
+  }
+
   private setState(value: RouteResponse<AuthRouteResponse>) {
     if (value.success) {
       this.authStateSubject.next({

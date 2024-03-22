@@ -1,4 +1,4 @@
-import { TasksService } from './tasks.service';
+import { TasksService } from './tasks-state.service';
 import { TasksApiService } from '../api/tasks-api.service';
 import { createSpyObj } from '../../../utils/create-spy-obj';
 

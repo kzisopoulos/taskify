@@ -1,7 +1,7 @@
 import { TasksApiService } from './tasks-api.service';
 import { HttpClient } from '@angular/common/http';
 import { createSpyObj } from '../../../utils/create-spy-obj';
-import { AuthService } from '../../auth/state/auth.service';
+import { AuthService } from '../../auth/state/auth-state.service';
 
 describe('TasksApiervice', () => {
   let service: TasksApiService;
