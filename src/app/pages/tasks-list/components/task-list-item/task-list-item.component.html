@@ -5,7 +5,7 @@
   (mouseenter)="showIcons = true"
   (mouseleave)="showIcons = false"
 >
-  <ng-container *ngIf="!isEditing; else editForm">
+  <ng-container *ngIf="!isMutating; else editForm">
     {{ task.title }}
   </ng-container>
   <ng-template #editForm>
@@ -30,7 +30,7 @@
       </div>
     </div>
   </ng-template>
-  <div *ngIf="showIcons && !isEditing" class="absolute top-3 right-2">
+  <div *ngIf="showIcons && !isMutating" class="absolute top-3 right-2">
     <div class="flex items-center gap-2">
       <ng-icon
         name="heroPencil"

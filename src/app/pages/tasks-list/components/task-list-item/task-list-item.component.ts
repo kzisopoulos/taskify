@@ -19,7 +19,7 @@ export class TaskListItemComponent implements OnInit {
   @Input({ required: true }) public task!: TaskRouteResponse;
   @Input({ required: true }) public listType!: TaskStatus;
   @Input({ required: true }) public color!: string;
-  @Input({ required: true }) public isEditing!: boolean;
+  @Input({ required: true }) public isMutating!: boolean;
 
   public newTitle!: string;
 
@@ -34,9 +34,6 @@ export class TaskListItemComponent implements OnInit {
   public ngOnInit(): void {
     this.styleConfig = taskListStyleConfig[this.listType];
     this.newTitle = this.task.title;
-    if (this.task.id === '-1') {
-      this.isEditing = true;
-    }
   }
 
   public handleEditToggle() {

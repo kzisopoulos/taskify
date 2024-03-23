@@ -3,18 +3,28 @@ import { BehaviorSubject, take, tap } from 'rxjs';
 import {
   CreateTaskBodyProps,
   TaskRouteResponse,
+  TaskStatus,
   UpdateTaskBodyProps,
 } from '../../../models/task.interface';
 import { TasksApiService } from '../api/tasks-api.service';
 
+interface MutateTaskState {
+  isEditing: boolean;
+  taskId: string;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class TasksStateService {
-  private tasksSubject = new BehaviorSubject<TaskRouteResponse[] | null>(null);
-  public tasks$ = this.tasksSubject.asObservable();
-
   public constructor(private tasksApiService: TasksApiService) {}
+
+  private tasksSubject = new BehaviorSubject<TaskRouteResponse[]>([]);
+  public tasks$ = this.tasksSubject.asObservable();
+  private isMutatingTaskSubject = new BehaviorSubject<MutateTaskState>({
+    isEditing: false,
+    taskId: '',
+  });
+  public isMutatingTask$ = this.isMutatingTaskSubject.asObservable();
 
   public loadTasks(): void {
     this.tasksApiService
@@ -25,7 +35,7 @@ export class TasksStateService {
           if (tasks.success && tasks.data) {
             this.tasksSubject.next(tasks.data);
           } else {
-            this.tasksSubject.next(null);
+            this.tasksSubject.next([]);
           }
           return tasks;
         })
@@ -90,5 +100,47 @@ export class TasksStateService {
         })
       )
       .subscribe();
+  }
+
+  public setMutatingTask(taskId: string) {
+    const currentlyMutatedTask = this.isMutatingTaskSubject.getValue();
+    if (currentlyMutatedTask.taskId === taskId) {
+      this.isMutatingTaskSubject.next({
+        isEditing: false,
+        taskId: '',
+      });
+      this.removeEmptyTaskShell();
+    } else {
+      if (currentlyMutatedTask.taskId === 'NEW') {
+        this.removeEmptyTaskShell();
+      }
+      this.isMutatingTaskSubject.next({
+        isEditing: true,
+        taskId: taskId,
+      });
+    }
+  }
+
+  public mutateTask(task: TaskRouteResponse) {
+    if (task.id !== 'NEW') {
+      this.updateTask(task.id, task);
+      this.setMutatingTask(task.id);
+    } else {
+      this.createTask(task);
+      this.removeEmptyTaskShell();
+    }
+  }
+
+  public addEmptyTaskShell(listType: TaskStatus) {
+    this.tasksSubject.next([
+      ...this.tasksSubject.value,
+      { id: 'NEW', status: listType, title: '', userId: '' },
+    ]);
+    this.setMutatingTask('NEW');
+  }
+  public removeEmptyTaskShell() {
+    this.tasksSubject.next(
+      [...this.tasksSubject.value].filter((task) => task.id !== 'NEW')
+    );
   }
 }
