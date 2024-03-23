@@ -7,8 +7,7 @@ import {
 import { NgIconComponent } from '@ng-icons/core';
 import { TaskListItemComponent } from '../task-list-item/task-list-item.component';
 import { TasksStateService } from '../../../../core/services/tasks/state/tasks-state.service';
-import { AuthStateService } from '../../../../core/services/auth/state/auth-state.service';
-import { BehaviorSubject, Observable, map, pairwise, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { TaskListTheme } from '../../../../core/models/task.theme.interface';
 import { taskListStyleConfig } from '../../styles-config';
@@ -36,86 +35,29 @@ export class TaskListComponent implements OnInit {
 
   public color!: string;
 
-  private idToEditSubject = new BehaviorSubject<string>('');
-  public idToEdit$!: Observable<string>;
+  public currentlyMutadedTaskId$!: Observable<string>;
 
-  public constructor(
-    private tasksStateService: TasksStateService,
-    private authStateService: AuthStateService
-  ) {}
+  public constructor(private tasksStateService: TasksStateService) {}
   public ngOnInit(): void {
     this.styleConfig = taskListStyleConfig[this.listType];
-    this.idToEdit$ = this.idToEditSubject.asObservable().pipe(
-      pairwise(),
-      tap(([prev, curr]) => {
-        if (prev === '-1' && curr !== '-1') {
-          // Discard the new task if it's empty and not being edited
-          this.tasks = this.tasks.filter(
-            (task) => task.id !== '-1' && task.title !== ''
-          );
-        }
-      }),
-      map(([prev, curr]) => {
-        if (curr === '-1' && prev !== '-1') {
-          // Scenario #1: Cancelling a new task by clicking "X"
-          return '0';
-        } else if (curr === '-1' && prev === '-1') {
-          // Scenario #3: Prevent creating a new shell if one is already open
-          return '0';
-        } else {
-          // For other scenarios, maintain the current ID
-          return curr;
-        }
-      })
+    this.currentlyMutadedTaskId$ = this.tasksStateService.isMutatingTask$.pipe(
+      map((value) => (value.isEditing ? value.taskId : ''))
     );
   }
 
-  public toggleEditMode(taskId: string): void {
-    if (this.idToEditSubject.getValue() === taskId) {
-      this.idToEditSubject.next('0');
-      return;
-    }
-    this.idToEditSubject.next(taskId);
+  public setMutateMode(taskId: string): void {
+    this.tasksStateService.setMutatingTask(taskId);
   }
 
-  public handleEditClick(updatedTask: TaskRouteResponse): void {
-    // Scenario #4: Handling the edit state of existing tasks
-    if (this.idToEditSubject.getValue() === updatedTask.id) {
-      // If the task is already in edit mode, cancel the edit mode
-      this.idToEditSubject.next('0');
-    } else {
-      // Set the edit mode for the selected task
-      this.idToEditSubject.next(updatedTask.id);
-    }
-
-    if (updatedTask.id === '-1') {
-      this.tasksStateService.createTask({
-        status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
-        title: updatedTask.title,
-      });
-    } else {
-      this.tasksStateService.updateTask(updatedTask.id, updatedTask);
-    }
+  public handleMutateClick(updatedTask: TaskRouteResponse): void {
+    this.tasksStateService.mutateTask(updatedTask);
   }
 
   public handleDeleteClick(taskId: string): void {
     this.tasksStateService.deleteTask(taskId);
-    this.idToEditSubject.next('0');
   }
 
   public handleAddNewTask(): void {
-    if (this.idToEditSubject.getValue() !== '-1') {
-      // Insert one empty task (shell)
-      this.tasks = [
-        ...this.tasks,
-        {
-          id: '-1',
-          status: this.listType === 'DONE' ? 'DONE' : 'PENDING',
-          title: '',
-          userId: this.authStateService.getUserId() || '',
-        },
-      ];
-      this.idToEditSubject.next('-1');
-    }
+    this.tasksStateService.addEmptyTaskShell(this.listType);
   }
 }

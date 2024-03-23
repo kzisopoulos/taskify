@@ -21,10 +21,10 @@
     <app-task-list-item
       [task]="task"
       [color]="color"
-      (toggleEdit)="toggleEditMode($event)"
-      (editClick)="handleEditClick($event)"
+      (toggleEdit)="setMutateMode($event)"
+      (editClick)="handleMutateClick($event)"
       (deleteClick)="handleDeleteClick($event)"
-      [isEditing]="(idToEdit$ | async) === task.id"
+      [isMutating]="(currentlyMutadedTaskId$ | async) === task.id"
       [listType]="listType"
       cdkDrag
       [cdkDragData]="task"
