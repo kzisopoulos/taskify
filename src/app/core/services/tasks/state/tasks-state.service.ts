@@ -16,20 +16,24 @@ export class TasksStateService {
 
   public constructor(private tasksApiService: TasksApiService) {}
 
-  public loadTasks() {
-    return this.tasksApiService.getTasks().pipe(
-      tap((tasks) => {
-        if (tasks.success && tasks.data) {
-          this.tasksSubject.next(tasks.data);
-        } else {
-          this.tasksSubject.next(null);
-        }
-        return tasks;
-      })
-    );
+  public loadTasks(): void {
+    this.tasksApiService
+      .getTasks()
+      .pipe(
+        take(1),
+        tap((tasks) => {
+          if (tasks.success && tasks.data) {
+            this.tasksSubject.next(tasks.data);
+          } else {
+            this.tasksSubject.next(null);
+          }
+          return tasks;
+        })
+      )
+      .subscribe();
   }
-  public createTask(body: Omit<CreateTaskBodyProps, 'userId'>) {
-    return this.tasksApiService
+  public createTask(body: Omit<CreateTaskBodyProps, 'userId'>): void {
+    this.tasksApiService
       .addTask(body)
       .pipe(
         take(1),
@@ -47,8 +51,8 @@ export class TasksStateService {
       )
       .subscribe();
   }
-  public updateTask(taskId: string, body: UpdateTaskBodyProps) {
-    return this.tasksApiService
+  public updateTask(taskId: string, body: UpdateTaskBodyProps): void {
+    this.tasksApiService
       .updateTask(taskId, body)
       .pipe(
         take(1),
