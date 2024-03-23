@@ -13,7 +13,6 @@ import { TasksStateService } from '../../core/services/tasks/state/tasks-state.s
 import { Observable, map } from 'rxjs';
 import { TaskRouteResponse } from '../../core/models/task.interface';
 import { LetDirective } from '@ngrx/component';
-import { RouteResponse } from '../../core/models/response.interface';
 import { TaskListComponent } from './components/task-list/task-list.component';
 
 import {
@@ -50,10 +49,9 @@ export class TasksListComponent implements OnInit {
 
   public completedTasks$!: Observable<TaskRouteResponse[] | undefined>;
   public pendingTasks$!: Observable<TaskRouteResponse[] | undefined>;
-  public tasks$!: Observable<RouteResponse<TaskRouteResponse[]>>;
 
   public ngOnInit(): void {
-    this.tasks$ = this.taskStateService.loadTasks();
+    this.taskStateService.loadTasks();
 
     this.completedTasks$ = this.taskStateService.tasks$.pipe(
       map((tasks) => tasks?.filter((task) => task.status === 'DONE'))

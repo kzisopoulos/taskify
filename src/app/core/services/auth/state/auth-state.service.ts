@@ -78,7 +78,7 @@ export class AuthStateService {
     return this.authStateSubject.value?.id;
   }
 
-  private setState(value: RouteResponse<AuthRouteResponse>) {
+  private setState(value: RouteResponse<AuthRouteResponse>): void {
     if (value.success) {
       this.authStateSubject.next({
         username: value.data?.username || '',
