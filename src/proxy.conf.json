@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://taskify-backend-kfwz.onrender.com",
+    "secure": false
+  }
+}

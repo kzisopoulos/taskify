@@ -40,9 +40,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-/src/proxy.conf.json
-/src/environments/environment.development.ts
-/src/environments/environment.test.ts
-/src/environments/environment.staging.ts
-/src/environments/environment.prod.ts
