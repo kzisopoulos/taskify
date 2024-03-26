@@ -17,15 +17,7 @@ In order to run this application locally , you must checkout the backend applica
 You can check it out and find info on how to setup it [taskify-backend](https://github.com/kzisopoulos/taskify-backend)
 Also you need to create
 
-1. Inside `src` folder a new folder called `environments` and then create
-   - `environment.production.ts`
-   ```
-   export const environment = {
-   	production: true,
-   	apiUrl: 'http://localhost:3001/api',
-   };
-   ```
-   - `environment.ts`
+1. Inside `src/environments` create `environment.development.ts` with
    ```
    export const environment = {
    	production: false,
@@ -34,16 +26,17 @@ Also you need to create
    ```
 2. Inside `src` folder create `proxy.config.ts` configuration file with
 
-```
-{
-	"/api": {
-		"target": "http://localhost:3001",
-		"secure": false
-	}
-}
-```
+   ```
+   {
+      "/api": {
+         "target": "http://localhost:3001",
+         "secure": false
+      }
+   }
+   ```
 
-Instead of localhost:3001 you can use your own api url.
+- Instead of localhost:3001 you can use your own api url. <br>
+- `environment.ts` will server as the default for when you are building
 
 ## Production deployment
 
