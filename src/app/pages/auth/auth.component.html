@@ -1,13 +1,59 @@
 <div
-  class="h-full w-full grid place-items-center"
+  class="h-full w-full flex flex-1 flex-col lg:flex-row gap-4 md:py-20 min-h-0"
   *ngrxLet="isLoggedIn$ as isLoggedIn"
 >
+  <div class="w-full h-full flex-1 flex flex-col gap-10 px-4 lg:px-16 lg:w-2/3">
+    <h1 class="text-5xl font-bold">
+      A task manager... but
+      <span class="text-gradient">better</span> and
+      <span class="text-gradient">free</span>
+    </h1>
+    <div class="flex flex-col">
+      <div>
+        <img src="/assets/taskify.png" />
+      </div>
+      <div class="tracking-wide flex flex-col gap-2 items-center">
+        <h4 class="text-2xl">Features</h4>
+        <ul class="flex gap-2">
+          <li class="px-3 py-1.5 bg-gray-800 rounded-full">Create</li>
+          <li class="px-3 py-1.5 bg-gray-800 rounded-full">Edit</li>
+          <li class="px-3 py-1.5 bg-gray-800 rounded-full">Delete</li>
+          <li class="px-3 py-1.5 bg-gray-800 rounded-full">Drag & Drop</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 items-center mx-auto">
+      <h4 class="text-2xl text-center">Tech stack</h4>
+      <div class="flex gap-4">
+        <img src="assets/angular.svg" alt="Angular logo" class="h-8 w-8" />
+        <img
+          src="assets/tailwindcss.svg"
+          alt="Tailwindcss logo"
+          class="h-8 w-8"
+        />
+        <img src="assets/nodejs.svg" alt="NodeJS logo" class="h-8 w-8" />
+        <img
+          src="assets/typescript.svg"
+          alt="Typescript logo"
+          class="h-8 w-8"
+        />
+        <img src="assets/prisma.svg" alt="Prisma logo" class="h-8 w-8" />
+        <img src="assets/sqlite.svg" alt="Sqlite logo" class="h-8 w-14" />
+        <img src="assets/turso.png" alt="Turso logo" class="h-8 w-8" />
+      </div>
+    </div>
+    <div class="text-center text-2xl font-semibold pt-4">
+      Register <span class="text-gradient">now</span> and start managing those
+      tasks!
+    </div>
+  </div>
   <div
-    class="max-w-xl w-full p-4 border-2 border-gray-700 shadow-lg rounded-lg"
+    class="h-full lg:w-1/3 w-full px-4 lg:px-6 lg:border-l lg:border-l-gray-400"
   >
     @if(activePage === 'login'){
-    <h1 class="text-gray-400 font-bold text-4xl pb-6 text-center">
-      Login to taskify
+    <h1 class="font-bold text-4xl pb-6">
+      Login to <span class="text-gradient">taskify.</span>
     </h1>
     <form
       [formGroup]="loginForm"
@@ -37,16 +83,21 @@
       <div>
         Dont have an account? Register
         <span
-          class="text-blue-500 cursor-pointer underline"
+          class="text-blue-500 hover:text-blue-600 cursor-pointer underline"
           (click)="setActivePage('signup')"
           >here</span
         >
       </div>
-      <button type="submit" class="bg-blue-500 p-2 rounded-md">Login</button>
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-600 p-2 rounded-md"
+      >
+        Login
+      </button>
     </form>
     } @else {
-    <h1 class="text-gray-400 font-bold text-4xl pb-4 text-center">
-      Sign up with Taskify
+    <h1 class="font-bold text-4xl pb-4">
+      Sign up to <span class="text-gradient">taskify.</span>
     </h1>
 
     <form
@@ -87,12 +138,17 @@
       <div>
         Already have an account? Login
         <span
-          class="text-blue-500 cursor-pointer underline"
+          class="text-blue-500 hover:text-blue-600 cursor-pointer underline"
           (click)="setActivePage('login')"
           >here</span
         >
       </div>
-      <button type="submit" class="bg-blue-500 p-2 rounded-md">Register</button>
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-600 p-2 rounded-md"
+      >
+        Register
+      </button>
     </form>
 
     }
