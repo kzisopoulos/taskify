@@ -1,11 +1,20 @@
 <nav>
   <div class="flex items-center justify-between p-2">
-    <a routerLink="/" class="text-2xl font-black tracking-widest"> Taskify. </a>
+    <a routerLink="/" class="text-5xl font-black tracking-tight text-gradient">
+      taskify.
+    </a>
+    <div *ngIf="(username$ | async) === undefined">
+      <a href="https://www.github.com/kzisopoulos" target="_blank">
+        <img src="assets/github.svg" alt="Github logo" class="w-8 h-8" />
+      </a>
+    </div>
     <div *ngIf="username$ | async as username" class="flex gap-2 items-center">
-      <p>Hello {{ username }}</p>
+      <p class="text-lg font-medium">
+        Hello <span class="text-gradient capitalize">{{ username }}</span>
+      </p>
       <button
         (click)="logout()"
-        class="bg-red-500 text-white px-2 py-1 rounded"
+        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded"
       >
         Logout
       </button>
