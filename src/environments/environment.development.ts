@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://taskify-backend-kfwz.onrender.com/api',
+  apiUrl: 'http://localhost:3001/api',
 };
